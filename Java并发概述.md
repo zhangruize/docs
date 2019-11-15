@@ -4,7 +4,7 @@
 
 - Synchronize 的优化（无锁、偏向锁、轻量锁、重量锁）以及JVM上的实现原理（对象头）
 - Atomic原子库（CAS，ABA问题）
-- Volatile关键字
+- [Volatile关键字](https://juejin.im/post/5a2b53b7f265da432a7b821c)
 - 线程安全的集合实现
 - Object自身的同步wait, notify等，Thread的join等
 - 线程池，多线程同步， CountDownLatch, Barrier
