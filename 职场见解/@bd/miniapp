@@ -1,0 +1,50 @@
+mini app = {ui, business}
+    ui = {static elements, dynamic elements}
+    ui = {elements node tree}
+        dynamic element = {static element + business}
+            elements = {element type(map to business), attributes}
+                attributes = {value, method ref, object ref}  (dynamic attribute = method ref | obj ref)
+    business = {language basic lib, sdk lib}
+        sdk lib = {environment based functions(基础库based functions), platform extension api}
+
+
+the mini app writing:
+    ui, business isolate -> .js, .html, .css
+    business in ui -> .html + script element
+    ui in business -> .jsx (react ways)
+
+
+the mini app runtime:
+    no built-in runtime -> platform provide runtime
+    build-in runtime -> self shell application on OS
+    runtime = {webview + platform extension api impl (js register)}
+    runtime for platform-specific compiled mini app = {platform extension api impl}
+    platform-specific compiled mini app: ui, business -> platform native ui, business
+
+
+ui vs business:
+    ui is business, but business is not just ui.
+    ui extends from business, most call is graphics related.
+    writing ui in business is natual.
+
+
+statement vs command:
+    statement: express relation, don't tell me how to do.
+    command: tell me how to do to get what you want.
+    command is statement? yes, command is very basic statement for machine.
+
+
+embed-in one file vs sperate files:
+
+
+ui statement style vs code statement style:
+    ui statement style is good for describe ui design: xml, and easy for code to parse the structure.
+    code statement style is good for compiler to generate code.
+    ui statement is an input for code statement.
+    many things are the input for code statement. the ui statement is a file or content represents ui design.
+    they are all files, has the consume relationship.
+
+
+
+expreiment:
+
