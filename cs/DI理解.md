@@ -1,0 +1,105 @@
+不得不说DI是一个即使不关心，也能经常听到的东西。了解和掌握Dagger2并不容易，它比常见的库更难使用。我也总感觉Dagger2的解决方案在未来应该会被重构或替换，因为目前的学习使用成本太高，其使用的复杂性有时候已经大于所能带来的好处，或者因其复杂性带来的错误使用、维护成本，都将为其带来的好处大打折扣。
+
+## 背景
+
+依赖注入是比较宽泛的概念，没有依赖注入，写出来的代码也依然可以高效且运行良好。DI一般关注如下的代码场景：
+```
+构造器需要外部参数
+class UsefullAbility(source:Source, context:Context){}
+
+类内部成员需要从外部读取值
+class Fragment(){
+    var propertyFromOutsideToPass
+
+    fun ...{
+        propertyFromOutsideToPass = oursideProperty.
+    }
+}
+
+class Adapter(){
+    var propertyFromOutsideToPass by ...
+}
+```
+更一般的，一种场景是方法调用传入参数，一种是成员变量赋值。换句话说一些不考虑依赖注入的场景比如所需要的参数均可以由内部生成、也不需要对外暴露，局部变量，多次重新赋值、具有更特定逻辑的成员变量。在考虑DI的场景中，我们如果不借助工具，在方法入参情况下，一般会有一些东西扮演了容器角色，即负责创建实例、按需保留，如果是类似网络配置、存储配置，则一般会有全局的管理类。而对成员变量从外部取值时，则会变得更困难一些（当然Kotlin的属性委托让这个过程变得似乎大有改观），甚至在类似的场景下需要多次编写相似的代码。
+
+而DI工具旨在简化这种过程，它会尽量为你生成这些用于维护在多个类、抽象范围、层、模块之间传递实例、构造实例的工作。有的方案需要我们用DSL方式描述关系（koin），有的方案需要我们用注解描述（Dagger）。在运行的时候，有的方案依靠运行时反射（Guice），有的在apt/kapt生成代码、结合部分代码侵入完成（Dagger，代码侵入是指，需要依赖apt/kapt生成的类，在原有逻辑中手动添加调用）。
+
+依赖注入DI和Service Locator(SL)是有区别的。后者更偏向接口-实现查询、获取，而依赖注入则更宽泛，从接口、实例、组装、收集一些新的内容、构建关系图，均是它的范畴。而服务定位器往往会忽略依赖关系。
+
+## 使用dagger-android
+
+dagger的使用确实不算容易。即使看官方的教程，也有表述不清，极容易踩坑的地方。这种情况下，不妨看一下官方的blueprint工程里dagger-android的具体使用。来少走弯路。
+
+相比dagger的普通java环境，android中，activity, fragment, view, viewModel这些类的生成其实并不是我们所发起的。我们虽然不必依赖它们的构造做什么（除了ViewModel），即不怎么需要`work(fragment, activity)`并为此new或者传递实例这种情况。但一般来说，其成员变量往往有需要注入的，最常见的是`viewModel`。`viewModel`也会被多个`fragment`所共享，`viewModel`的构造往往还需要一些配置才能实现`viewModel`内部的能力，而这些配置里，可能又需要一切其他的配置。比如这样的依赖`viewModel(repo), repo(apiService)`等等。
+
+在准备开始为这种场景使用dagger-android时，我们还需要意识到：
+- 不能在fragment中创建新的dagger component是因为这样必然会导致新的viewModel。
+- viewModel的实际创建并不应该由我们触发，而是实现`ViewModelProvider.Factory`，我们只需要在`fragment`中访问`ViewModelProvider`去请求指定ViewModel类的实例即可。毕竟，`ViewModel`的出现是为了解决`Fragment`, `activity`在配置变更、以及其他状态销毁恢复时 `状态` 跨`fragment/activity`实例问题、以及在多`fragment`之间共享问题的。
+
+### 1. 声明ApplicationComponent
+
+使用@Component注解，为应用类定义一个dagger组件，注意，此接口需要继承于：`AndroidInjector<?>`，并提供factory接口及Factory.create方法。
+
+在Component注解里，一定要加上`AndroidInjectionModule`，此模块用于为Android Injector提供了Map的处理。
+
+Application类需要继承于DaggerApplication，并实现`applicationInjector():AndroidInjector`方法，创建出此Dagger组件。
+
+到这一步，我们还并未给`android injector`提供任何activity, fragment的工厂，因此，Android injector还不能为我们在`Activity, fragment`中进行注入（成员变量注入，比如ViewModelProvider.Factory）
+
+> 之所以使用Android Injector, android-dagger，是因为它提供了一层简单的框架，来更便于使用dagger，若没有这层框架，我们无法让application继承于`DaggerApplication`, 无法让`fragment`继承于`DaggerFragment`， 无法让`Activity`继承于`DaggerActivity`等，这会使得我们需要在Activity中往往需要getApplication，访问它的DaggerApplicationComponent，再调用xxActivityCompoennt来得到此Activity对应的dagger组件。对于Fragment来说，类似的，需要getActivity，访问Activity的公开成员变量DaggerXxxActivityComponent，调用inject才能让自己被注入。 而有了dagger-android后，只需按需继承这些类即可，甚至不需要调用DagerXxxxCompoennt.inject(this)，因为继承后，在对应生命周期方法中，封装层已经统一调用了。
+
+
+
+### 2. 声明ActivityModule
+   
+为了能够继承于`DaggerActivity/ DaggerFragment`等，来获得封装层的`inject(this)`调用，我们需要提供更多的`AndroidInjector.Factory`，如同上一步，我们可以手动的创建activity对应的module，来继承`AndroidInjector`，提供Factory接口及方法，并再建立对应的Dagger组件，并用`@ClassKey`或`@StringKey`把这个`AndroidInjector`子类与key关联，从而可以被`AndroidInjectionModule`模块检索。
+
+尽管如此，android-dagger提供了`@ContributesAndroidInjector`注解，它用于简化这一过程，借助它，我们只需要为activity建立一个对应module（抽象类），它有一个抽象方法，无参数，返回指定activity即可。此外，还可以补充module到这个component之中。（注意，虽然我们没把它写成component，但它会生成出对应的 dagger component），比如补充一些`Fragment`的module，而这些fragment如果也是继承于`DaggerFragment`的，那么如同前面所说，可以用`@ContributesAndroidInjector`类似的完成。
+
+到这一步，我们还没有涉及ViewModelProvider.Factory的提供。
+
+### 3. 声明ViewModelProvider.Factory
+
+此过程我完全按照了blueprint项目作为参照。需要几个步骤：
+- 用`@MapKey`注解创建`ViewModelKey`注解，参数是ViewModel子类。便于注册ViewModel时标识。
+- 提供一个dagger moudle，提供了`ViewModelProvider.Factory`，而它的实现类的构造函数通过`Inject`注解，注入Dagger搜集到的ViewModel Map。
+- 借助 `@Binds` `@IntoMap` `@ViewModelKey(XxxxViewModel::class)`注解到接口方法，提供ViewModel。
+- 在需要ViewModel的Fragment的dagger component中，引入第二部的module作为依赖即可。
+
+## 其他
+
+`@IntoMap, @IntoSet`确实是更为强大的使用方式，理论上，我们可以借此搜集、提供出更多有价值的东西。而对于使用的地方，仅仅是只需要`@Inject`到构造器或者成员变量，即可享受到这份map。
+
+> 虽然强大，但是它使用起来确实需要适应。因为需要一边写用于kapt的使用大量注解的代码，来表述关系、配置、注册，另一边需要在apt后的世界去使用。这种分隔虽然理论上应该并不需要特别注意，但还是会感觉奇怪。
+
+此外，由于不当的使用，和范围的管理，可能也容易出现学习不精带来的排查成本。
+
+**不用害怕，可以看看自动生成的代码，或许会帮助理解**
+
+## 瞎掰一句
+
+实际上我认为，作为依赖注入，它在解决问题的同时，但也在引入对它的某些依赖，这一点已经不太完美了。语言层面或许会有更好的解决途径。依赖是由语言进入进来的，它无比自然，依赖注入只是因为这种原有的依赖关系在某些时候变得复杂、以及有冗余处理代码等问题。无论程序在编译时、还是在运行时，都伴随着依赖的解析。而注入更像是“声明式”的使用，只“声明”需要什么，在什么范围内共享，标识符如何等，它之所以能取得，前提是依赖图已经成立，而且范围这些已经被我们手动纳入考虑添加到了各种说明细节里，发生的真正“魔法”并不多，它们只是一类“表述工具链”，在验证依赖关系无误后，为你生成出输入参数的代码而已。
+
+语言层面或许可以给出更多的支持。比起javax的inject那些注解类可以更进一步。就如Kotlin的属性委托其实也在有效推动这种发展一样。
+
+## 优劣
+
+首先应该把自动化DI工具和手动DI都理解为DI，然后讨论DI和非DI的优劣对比。这样自然不必多说，对比的是，一个封装类、方法的功能，是依赖于入参提供的信息来完成功能，还是基本不需要入参，而尽可能内部自己去索取、创建所有需要东西。从这个出发点，许多关于描述DI的优点就很好理解了：
+- 便于代码复用
+- 便于重构
+- 易于测试
+  
+因为自动DI和手动DI在很多情况下，都可以轻松替换实现，所以它们都享受DI的这些优点。自动DI只是进一步减少了一些样板代码（如果有）。
+
+缺点，和非DI，比如Service Locator相比，有时候增加了复杂性，需要传递，传递需要成本.
+
+## 拓展阅读
+
+- [Android developer, dependency-injection](https://developer.android.com/training/dependency-injection)
+- [Android Blueprint Example](https://github.com/android/architecture-samples)，可能需要切换到其他分支
+- [Dagger 2](https://dagger.dev/dev-guide/android.html)
+- [Android developer, dagger](https://developer.android.com/training/dependency-injection/dagger-android)
+
+第三方
+- [koin](https://insert-koin.io/docs/quickstart/android/)
+- [kodein](https://github.com/Kodein-Framework/Kodein-DI)
