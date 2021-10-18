@@ -67,7 +67,7 @@ executeCommand:
 
 ...->IPCThreadState.transact(https://cs.android.com/android/platform/superproject/+/master:frameworks/native/libs/binder/IPCThreadState.cpp;drc=master;bpv=0;bpt=1;l=712)
 
-![](ipcthreadstate_transact.png)
+![](../pics/ipcthreadstate_transact.png)
 
     - writeTransactionData() (# wrap data...)
     - waitForResponse(if not one way, write to reply, else just check result.)

@@ -127,7 +127,7 @@ suspend fun <R> withFrameNanos(
 
 所以简单来说，挂起函数、挂起方法，原理就是，其内部共用生成的一个回调，并给方法入参自动添加一个回调，在方法完成后调用。
 
-![](pics/suspend-1.png)
+![](../pics/suspend-1.png)
 
 
 `suspend ()->Unit`或更一般的`suspend T.()->R`

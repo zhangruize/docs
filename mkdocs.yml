@@ -1,0 +1,9 @@
+site_name: Zrek Blog
+theme:
+  name: material
+  logo: assets/z.png
+  favicon: assets/z.png
+  features:
+
+extra:
+  generator: false
