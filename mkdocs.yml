@@ -3,7 +3,10 @@ theme:
   name: material
   logo: assets/z.png
   favicon: assets/z.png
-  features:
 
 extra:
   generator: false
+
+plugins:
+  - search
+  - awesome-pages
