@@ -42,4 +42,4 @@
 
 ## 简历下载
 
-<a href="https://github.com/zhangruize/resume/raw/master/resume-zh.pdf" target="_blank">点击此处</a>，更新于2021-10月
+<a href="assets/简历-张瑞泽.pdf" target="_blank">点击此处</a>，更新于2021-10月
