@@ -24,3 +24,13 @@
 
 - 与singleTask相似，但只允许自己出现在这个ActivityTask中。即使此时如果打开一个taskAffinity一样的但模式也是singleInstance的新页面时，这个task仍然只会保留新的页面，此时点击返回会退出。
 - 实际上此时打开任何Activity都会离开此Task，在新的task中打开。包括上面的情况。
+
+## activity生命周期细节
+
+activity A -> activity B
+activity A的stop一定是在activity B的resume之后。至于为什么，可以思考下动画，动动脑子也想得通。
+
+![onStop](pics/actvity-onStop.png)
+
+## activity 启动
+https://medium.com/android-news/android-application-launch-explained-from-zygote-to-your-activity-oncreate-8a8f036864b

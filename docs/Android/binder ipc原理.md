@@ -1,5 +1,3 @@
-# binder
-
 ## 背景概述
 
 一种基于Linux系统的进程间通信方式。起源于OpenBinder，经过多次公司转手开发，binder驱动程序在2014年左右已经合入到linux内核。

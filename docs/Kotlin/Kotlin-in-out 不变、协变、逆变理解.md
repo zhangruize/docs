@@ -43,3 +43,7 @@ a=b
 ## 边界
 
 类似Java，我们可以用`T extends superClass`定义一个带上边界的类型参数，[parent, childClass...]。
+
+## 拓展阅读
+
+- [wikipedia](https://zh.wikipedia.org/wiki/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98)
