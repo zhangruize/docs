@@ -1,4 +1,4 @@
-# Dex文件理解
+# Dex File
 
 ![](http://zjutkz.net/images/dex%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/dex_structure.png)
 

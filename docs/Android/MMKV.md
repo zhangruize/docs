@@ -1,5 +1,3 @@
-# MMKV理解
-
 [多进程](https://github.com/Tencent/MMKV/wiki/android_ipc)
 
 ## MMKV原理（mmap + 文件锁 + ProtoBuffer）
