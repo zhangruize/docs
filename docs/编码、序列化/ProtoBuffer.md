@@ -25,3 +25,8 @@ ProtoBuffer的序列化/反序列化相对简单。写入数据时，对每个�
 ## 适用场景
 
 除了前面所说的统一数据体描述以外，它对嵌入式场景、蓝牙传输数据等偏底层方向时，有比较好的使用诉求。
+
+## 拓展阅读
+
+- [protobuf](https://developers.google.com/protocol-buffers/docs/style)
+- [protobuf-gradle-plugin](https://github.com/google/protobuf-gradle-plugin)

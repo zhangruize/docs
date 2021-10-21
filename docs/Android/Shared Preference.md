@@ -1,10 +1,8 @@
-## Shared Preferences
+# Shared Preferences
 
 它是一个以XML格式提供持久化KV存储的安卓框架内置方案。
 
-它由`ContextImpl`负责创建，进程内每个`SharedPreference`文件都会对应一个`SharedPrefences`实例。由此我们可以得到：
-
-- `SharedPrefencesImpl`实例在进程内和文件一对一存在。它多进程下无法保证安全。官方建议的跨进程访问需要使用`ContentProvider`，由此，它的mode参数已经基本无意义。
+它由`ContextImpl`负责创建，进程内每个`SharedPreference`文件都会对应一个`SharedPrefences`实例。由此可以说，`SharedPrefencesImpl`实例在进程内和文件一对一存在。它多进程下无法保证安全。官方建议的跨进程访问需要使用`ContentProvider`，由此，它的mode参数已经基本无意义。
 
 ## 工作机理
 
