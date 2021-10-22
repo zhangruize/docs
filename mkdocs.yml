@@ -4,6 +4,12 @@ theme:
   logo: assets/z.png
   favicon: assets/z.png
 
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
+
 extra:
   generator: false
 
