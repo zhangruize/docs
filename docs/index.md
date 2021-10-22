@@ -30,7 +30,7 @@
 
 详情请参阅“计算机图形”section
 
-- **flower** 使用elsl，动态的花朵和动态的颜色
+- **flower** 使用glsl，动态的花朵和动态的颜色
 - **complex linear gradient** 使用canvas，随机的线性渐变图案，类似Windows vista时代
 - **flow field** 使用canvas和simple noise，粒子在场中像水流运动
 - **path tracing** 使用c++基于smallpt项目拓展的路径追踪渲染程序

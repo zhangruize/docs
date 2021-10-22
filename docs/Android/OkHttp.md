@@ -265,6 +265,15 @@ for(Processor p: processors){
 
 到此，再提一句关于自定义信任的问题，如[Stackoverflow](https://stackoverflow.com/questions/25509296/trusting-all-certificates-with-okhttp)上的回答，我们需要通过在构造`OkHttpClient`时传入使用自定义`TrustManager`构造的`SSLSocketFactory`、自定义的`HostnameVerifier`，以及可选的固定证书检查器即可。
 
+## 自定义拦截器
+
+常用于以下情景：
+
+- 认证鉴权，比如添加通用的鉴权请求参数。
+- 支持压缩编码格式
+- 打印日志
+- 自动化测试、Mock。
+
 ## 拓展阅读
 
 - [JDK SSLSesion](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLSession.html)
