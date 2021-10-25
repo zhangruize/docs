@@ -11,7 +11,7 @@
 
 ## 截图
 
-![](../pics/sticker%20board2.jpg)
+![](../../pics/sticker%20board2.jpg)
 
 ## 所用技术
 
