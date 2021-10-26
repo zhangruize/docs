@@ -1,6 +1,6 @@
 ## 概述
 
-可以访问[在线链接](https://zhangruize.github.io/tp/art/glsl/flower/)体验。
+可以访问[在线链接](https://zhangruize.github.io/tp/art/elsl/flower/)体验。
 
 此项目是在工作之余学习glsl完成的，本来是想了解shader，但是无意之间找到了很好的glsl教程，于是用了一周学习它，期间做出了很多有趣的东西，更有代表性的是这个。其实确切的说，这里只是涉及fragment shader，即片段着色器，并没有涉及顶点着色器、几何着色器等。
 
