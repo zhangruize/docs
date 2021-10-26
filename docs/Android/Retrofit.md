@@ -124,9 +124,152 @@ suspend fun <T> Call<T>.awaitResponse(): Response<T> {
 
 ## CallAdapter
 
+若提供自定义的“请求调用”对象，比如除了内置的`retrofit2.Call`，要提供java的`CompletableFuture`作为接口方法返回类型。则需要提供`CallAdapter.Factory`。如下：
+```java
+public final class Java8CallAdapterFactory extends CallAdapter.Factory {
+    // CallAdapter.Factory的抽象方法需要实现。即提供CallAdapter实例
+  @Override
+  public @Nullable CallAdapter<?, ?> get(
+      Type returnType, Annotation[] annotations, Retrofit retrofit) {
+          // 确认返回类型是要处理的类型
+    if (getRawType(returnType) != CompletableFuture.class) {
+      return null;
+    }
+        // 确认CompletableFuture包含了类型参数，即泛型有传入
+    if (!(returnType instanceof ParameterizedType)) {
+      throw new IllegalStateException(
+          "CompletableFuture return type must be parameterized"
+              + " as CompletableFuture<Foo> or CompletableFuture<? extends Foo>");
+    }
+    Type innerType = getParameterUpperBound(0, (ParameterizedType) returnType);
 
+        // 若泛型不是`retrofit2.Response`，则使用BodyCallAdapter此自定义CallAdapter
+    if (getRawType(innerType) != Response.class) {
+      return new BodyCallAdapter<>(innerType);
+    }
 
-## ResponseConverter
+    // 若泛型是`retrofit2.Response`，则确认它的泛型参数有传入
+    if (!(innerType instanceof ParameterizedType)) {
+      throw new IllegalStateException(
+          "Response must be parameterized" + " as Response<Foo> or Response<? extends Foo>");
+    }
+    // 获取Response的参数类型，构造ResponseCallAdapter
+    Type responseType = getParameterUpperBound(0, (ParameterizedType) innerType);
+    return new ResponseCallAdapter<>(responseType);
+  }
+
+  private static final class BodyCallAdapter<R> implements CallAdapter<R, CompletableFuture<R>> {
+    private final Type responseType;
+
+    BodyCallAdapter(Type responseType) {
+      this.responseType = responseType;
+    }
+
+    // CallAdapter需要实现的方法，返回数据结果类型。即具体的数据实体类。SomeData对应的类型
+    @Override
+    public Type responseType() {
+      return responseType;
+    }
+
+    // CallAdapter需要实现的方法，把retorif2.Call转为CompletableFuture即自定义的请求封装结构。
+    @Override
+    public CompletableFuture<R> adapt(final Call<R> call) {
+      final CompletableFuture<R> future =
+          new CompletableFuture<R>() {
+            @Override
+            public boolean cancel(boolean mayInterruptIfRunning) {
+              if (mayInterruptIfRunning) {
+                call.cancel();
+              }
+              return super.cancel(mayInterruptIfRunning);
+            }
+          };
+
+      call.enqueue(
+          new Callback<R>() {
+            @Override
+            public void onResponse(Call<R> call, Response<R> response) {
+              if (response.isSuccessful()) {
+
+                  //这里使用call.body
+                future.complete(response.body());
+              } else {
+                future.completeExceptionally(new HttpException(response));
+              }
+            }
+
+            @Override
+            public void onFailure(Call<R> call, Throwable t) {
+              future.completeExceptionally(t);
+            }
+          });
+
+      return future;
+    }
+  }
+
+// 大部分同上，这里只保留了response作为结果。
+  private static final class ResponseCallAdapter<R>
+      implements CallAdapter<R, CompletableFuture<Response<R>>> {
+    private final Type responseType;
+    @Override
+    public CompletableFuture<Response<R>> adapt(final Call<R> call) {
+      call.enqueue(
+          new Callback<R>() {
+            @Override
+            public void onResponse(Call<R> call, Response<R> response) {
+              future.complete(response);
+            }
+          });
+      return future;
+    }
+  }
+}
+```
+
+## CallFactory
+
+在这里先得说它和OkHttp的关系是多么紧密。
+
+### OkHttp关联
+
+虽然它有`retrofit2.Call`，其在`retroft`中的内置实现其实是`OkHttpCall`顾名思义，用OkHttp实现了`retrofit2.Call`，此实现是无法被替换的。我们能替换的只有`okhttp3.Call.Factory`，它定义如下：
+```java
+  interface Factory {
+    Call newCall(Request request);
+  }
+```
+即我们需要这些OkHttp的类来构造一个`okhttp`的`Call`接口实现，以此实现自定义请求过程。而`okhttp.OkHttpClient`实现了`Call.Factory`由此我们替换时，往往只需要构造一个自定义配置的`OkHttpClient`来替换即可，一般不需要深度重新实现`okhttp.Call`。
+
+## Converter
+
+如上面所说，对于不可替换的`OkHttpCall`，它使用`okhttp`的类来抽象请求访问和数据响应。此过程对应`okhttp`内的`Request`和`Response`。这两者自身没有任何对结构化数据的支持，这里需要工具封装。在`retrofit`中，便是通过`Converter`接口。在自定义的时候，只需要提供`Converter.Factory`的子类即可。代码如下：
+```java
+    /**
+     * Returns a {@link Converter} for converting an HTTP response body to {@code type}, or null if
+     * {@code type} cannot be handled by this factory. This is used to create converters for
+     * response types such as {@code SimpleResponse} from a {@code Call<SimpleResponse>}
+     * declaration.
+     */
+    public @Nullable Converter<ResponseBody, ?> responseBodyConverter(
+        Type type, Annotation[] annotations, Retrofit retrofit) {
+      return null;
+    }
+
+    /**
+     * Returns a {@link Converter} for converting {@code type} to an HTTP request body, or null if
+     * {@code type} cannot be handled by this factory. This is used to create converters for types
+     * specified by {@link Body @Body}, {@link Part @Part}, and {@link PartMap @PartMap} values.
+     */
+    public @Nullable Converter<?, RequestBody> requestBodyConverter(
+        Type type,
+        Annotation[] parameterAnnotations,
+        Annotation[] methodAnnotations,
+        Retrofit retrofit) {
+      return null;
+    }
+```
+即返回空代表没法转换。对于Retrofit可以添加一组`Converter.Factory`由此可以向下继续查询。
 
 ## 拓展阅读
 

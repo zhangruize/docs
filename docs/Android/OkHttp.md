@@ -1,4 +1,4 @@
-OkHttp是一个基于JDK的网络客户端。它因其拦截链的设计能被简单高效地定制拓展。结合其包含Connection的复用，对Http2的支持等，都使得它成为安卓开发中所被追捧使用的。
+OkHttp是一个基于JDK的网络客户端。它因其拦截链的设计能被简单高效地定制拓展。结合其包含Connection的复用，对Http2的支持等，都使得它成为安卓开发中所被追捧使用的。它本身是不包含构建序列化、反序列化来发起请求、解析响应的工具的。而是只包含`Request`和`Response`的原始描述和功能。
 
 ## 拦截链
 
@@ -273,6 +273,12 @@ for(Processor p: processors){
 - 支持压缩编码格式
 - 打印日志
 - 自动化测试、Mock。
+
+## Events
+
+即可以添加`EventListener`来监听各个关键节点的事件回调。如图：
+
+![](https://square.github.io/okhttp/images/events%402x.png)
 
 ## 拓展阅读
 
