@@ -142,6 +142,16 @@ suspend fun <R> withFrameNanos(
 
 - 更精炼的异步代码、更好的生命周期范围管理。
 
+## 特殊问题
+
+launch{
+    runblocking{
+        println()
+    }
+}
+
+说是会有偶现问题，会导致launch无法结束。
+
 ## 瞎掰一句
 
 很多Kotlin的特性，至少在Jvm平台上，能看到编译器做了大量的工作。一段简短的kotlin代码，背后的Jvm class却并不简短。甚至编译器对其编译内容里，进一步引入了Kotlin的协程库，即说明，即使完成了编译，在运行时必须要附带Kotlin的协程库运行时，不然依然无法执行。
