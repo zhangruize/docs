@@ -329,7 +329,11 @@ async 和 sync的message具体作用依赖于`MesssageQueue#PostSyncBarrier`。�
 
 一开始我以为Handler/Looper出现仅是为了解决线程之间通信。但考虑到有类似`BlockingQueue`这种jdk的线程集合，为何不能用此来通信呢？
 
-回答也很容易，即文章开头内容就可以算作回答。Looper的机制涵盖了java和native两侧的线程间通信。对于不包含jvm的进程下，依然可以使用此机制。以及fd的存在，可以方便用于方便捕获更多IO事件。另外，两者异步的原理也并不相同(epoll vs 线程状态链表+park/unpark)。这里的优劣我暂时无法得出评判。`BlockingQueue`的介绍请参阅“Java”section。
+我认为包含如下几点原因：
+
+- Looper的机制涵盖了java和native两侧的线程间通信。对于不包含jvm的进程下，依然可以使用此机制（当然这个理由还不主要）。
+- fd的订阅，可以方便用于方便捕获更多IO事件。比如Vsync, input。
+- 两者异步的原理也并不相同(epoll vs 线程状态链表+park/unpark)，这里的优劣我暂时无法得出评判。`BlockingQueue`的介绍请参阅“Java”section。
 
 ## 拓展阅读
 
