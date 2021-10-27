@@ -64,6 +64,41 @@ Atomic原子库主要使用Unsafe包的cas操作。
 - 非公平，在`tryAcquire`的时候，检查state空闲，就会acquire(即compareAndSetState)。
 - 公平，在`tryAcquire`的时候，检查state空闲，如果自己的线程不是在等待队列的head的话，会返回false。如果等待队列为空的话，则也会尝试acquire。或者自己已经是占有线程了直接acquire。
 
+## 线程池
+
+`ThreadPoolExecutor`使用了`ArrayBlockingQueue`作为任务队列，它支持阻塞、超时、立即返回等形式的读写，并多线程安全，详见“Java”section。 `ScheduledThreadPoolExecutor`继承了`ThreadPoolExecutor`，但使用了`DelayedWorkQueue`作为任务队列，它是专门的一个实现，并不通用，如你所想，它在入列时会提供根据`delay`大小排序，似乎是堆排序。此外在出列时，获取头元素后，若发现依然有`delay`则不返回元素。即它出列的前提是该元素已经没有`delay`了。其`delay`计算的实现如下：
+```java
+        public long getDelay(TimeUnit unit) {
+            return unit.convert(this.time - System.nanoTime(), TimeUnit.NANOSECONDS);
+        }
+```
+`DelayedWorkQueue`出列逻辑如下：
+```java
+  public RunnableScheduledFuture<?> take() throws InterruptedException {
+      final ReentrantLock lock = this.lock;
+      lock.lockInterruptibly();
+      try {
+          for (;;) {
+              RunnableScheduledFuture<?> first = queue[0];
+              if (first == null)
+                  available.await(); 
+              else {
+                  long delay = first.getDelay(NANOSECONDS);
+                  if (delay <= 0L)  // 即若delay过期，则取出。
+                      return finishPoll(first);
+                  first = null; // don't retain ref while waiting
+                  if (leader != null)
+                      available.await();
+                  else {
+                      Thread thisThread = Thread.currentThread();
+                      leader = thisThread;
+                          available.awaitNanos(delay);
+                  }
+              }
+          }
+      }
+  }
+```
 
 ## 线程安全集合
 

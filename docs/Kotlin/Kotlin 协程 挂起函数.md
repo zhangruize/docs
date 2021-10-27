@@ -118,6 +118,117 @@ suspend fun <R> withFrameNanos(
 `ExecutorCoroutineDispatcherImpl: ExecutorCoroutineDispatcher(), Delay `
 一般还是用ExecuterService分发。若是ScheduledExecuterService，则delay会用其对应的`schedule`等方法，否则将开启其他线程。
 
+### 过程描述
+
+因为这个过程还是很容易使人困惑，无法弄清楚协程和线程的分发过程，这里我再重新补充一些细节。
+
+`CoroutineDispatcher`，它是`ContinuationInterceptor`的子类，由此可以在协程上下文中以这个类作为key检索到。而作为拦截器，它的目的是创建`DispatchedContinuation`，即把原来的`continuation`包裹为具有分发性质的`continuation`。代码如下：
+```java
+public final override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =
+        DispatchedContinuation(this, continuation)
+```
+如上所说，`DispatchedContinuation`主要对原`continuation`包装了一层，这一层目的在于决定是否分发，即是否需要切换线程。代码如下：
+```java
+// DispatchedContinuation: 
+    override fun resumeWith(result: Result<T>) {
+        val context = continuation.context
+        val state = result.toState()
+        if (dispatcher.isDispatchNeeded(context)) {
+            _state = state
+            resumeMode = MODE_ATOMIC
+            dispatcher.dispatch(context, this)
+        } else {
+            executeUnconfined(state, MODE_ATOMIC) {
+                withCoroutineContext(this.context, countOrElement) {
+                    continuation.resumeWith(result)
+                }
+            }
+        }
+    }
+```
+即它需要`dispatcher`成员去判断是否需要分发，若需要则交由其分发，方法是`Dispatcher.dispatch(CoroutineContext, Runnable)`，其中`Runnable`是`DispatchedContinuation`自己，即它实现了`runnable`，来包裹了`resume`的过程，从而在分发器分发后继续完成`resume`。代码如下：
+```java
+// DispatchedContinuation -: DispatchedTask # run. 已精简。用于在分发器完成分发后继续完成resume过程。
+    public final override fun run() {
+        val taskContext = this.taskContext
+        var fatalException: Throwable? = null
+        try {
+            val delegate = delegate as DispatchedContinuation<T>
+            val continuation = delegate.continuation
+            withContinuationContext(continuation, delegate.countOrElement) {
+                val context = continuation.context
+                val state = takeState() // NOTE: Must take state in any case, even if cancelled
+                val exception = getExceptionalResult(state)
+                val job = if (exception == null && resumeMode.isCancellableMode) context[Job] else null
+                if (job != null && !job.isActive) {
+                    val cause = job.getCancellationException()
+                    cancelCompletedResult(state, cause)
+                    continuation.resumeWithStackTrace(cause)
+                } else {
+                    if (exception != null) {
+                        continuation.resumeWithException(exception)
+                    } else {
+                        continuation.resume(getSuccessfulResult(state))
+                    }
+                }
+            }
+        }
+    }
+```
+由此，我们再看`CoroutineDispathcer.dispatch`的实现，这里有常见两种情况：
+
+1. 基于现有Java的`Executor`实现来构造的`ExecutorCoroutineDispatcher`，可以使用`ExecutorService.asCoroutineDispatcher()`拓展方法转化。
+2. 基于Kotlin自己实现的Java的`Executor`接口`CoroutineScheduler`，并以其为承载来构造出的`ExperimentalCoroutineDispatcher`。
+
+> 目前我这里看到的`Dispatchers.IO`使用的是后者。
+
+这两种dispatcher方案的`dispatch`代码对比如下：
+```java
+    override fun dispatch(context: CoroutineContext, block: Runnable) {
+        try {
+            executor.execute(wrapTask(block))
+        } catch (e: RejectedExecutionException) {
+            cancelJobOnRejection(context, e)
+            Dispatchers.IO.dispatch(context, block)
+        }
+    }
+
+    override fun dispatch(context: CoroutineContext, block: Runnable): Unit =
+        try {
+            coroutineScheduler.dispatch(block)
+        } catch (e: RejectedExecutionException) {
+            DefaultExecutor.dispatch(context, block)
+        }
+```
+至于最后`Executor`这个java接口的实现，实现均依赖于多生产者、多消费者的队列数据结构，对于ExecutorService来说，往往采用`ArrayBlockingQueue`，它支持阻塞获取也支持超时获取等，而对于`ScheduledThreadPoolExecutor`，则使用`DelayedWorkQueue`，详见“Java”section.对于kotlin的`CoroutineScheduler`来说，则是采用`LockFreeTaskQueue`，也是自己创造的一个类型。
+
+那么思路总结就是，线程的分发建立在`continuation`的`CoroutineContext`上下文中的`CoroutineInterceptor`元素中，它是`CoroutineDispatcher`类型。`CoroutineInterceptor`提供了机制来对`Continuation`拦截、进行包装等。对于线程分发，则是对`Continuation`进行包装，包装后的`DispatchedContinuation`在`resume`的处理中有所不同，会查询是否需要分发，若需要则会在分发后再`resume`。
+
+基于此思路，我们可以建立如下的代码场景：
+```java
+//ui thread
+val r = async(IO){api()}
+println(r)
+
+等效于
+funA(Callback{r-> println(r) })
+
+fun funA(callback){
+    dispatchCallback1(Callback{
+        api(Callback{it->
+            dispatchCallback2(callback, it)
+        })
+    })
+}
+fun dispatchCallback1(callback){
+    IO.executor.execute(callback)
+}
+fun dispatchCallback2(callback){
+    UI.executor.execute(callback)
+}
+```
+
+
 
 ## 挂起函数
 
