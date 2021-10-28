@@ -22,3 +22,11 @@ test(p1, p2, p3, int, object)
 ## == vs ===
 
 `==`可以类比Object.equals()，而`===`可以类比指针引用是否相等。
+
+## lambda
+
+kotlin中的lambda实现和java完全不同。有多种情况：
+
+- 如果是内联方法，则lambda代码块会被内联进入调用者，此时没有什么包装。
+- 一般情况下，代码块会被包装为`kotlin.jvm.internal.Lambda`的子类，并根据所包含的参数情况实现`FunctionX`接口再进行传递。
+
