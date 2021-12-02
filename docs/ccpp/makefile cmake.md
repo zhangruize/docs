@@ -19,8 +19,10 @@ target ... : prerequisites ...
 
 ## cmake
 
+可以检索cmake index页面来查看各种指令。
 
 ## 阅读更多
 
 - [makefile tutorial](https://seisman.github.io/how-to-write-makefile/introduction.html)
 - [cmake tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
+- [cmake index](https://cmake.org/cmake/help/latest/genindex.html)
