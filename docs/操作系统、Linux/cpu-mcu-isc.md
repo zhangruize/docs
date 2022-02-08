@@ -52,6 +52,12 @@ ARM的缺点
 
 > 原文 https://www.section.io/engineering-education/arm-x86/#:~:text=ARM%20is%20a%20RISC%20architecture,of%20instructions%20it%20can%20use.&text=Meanwhile%2C%20x86%20is%20a%20CISC,for%20Complex%20Instruction%20Set%20Computing.
 
+## CISC/RISC/MISC
+
+CISC: 复杂指令集, RISC: 简单指令集， MISC: 最小指令集
+
+> wiki: https://en.wikipedia.org/wiki/Reduced_instruction_set_computer
+
 ## esp32/stm32
 
 如上所说，一般来说，这两者的芯片产品都是mcu，即包含了除了cpu以外的更多模块，如wifi，蓝牙等，算是CoC，chips on chips。而差异在于，esp32的cpu并不是arm架构的cpu，由此ISC也和ARM的有所差异。这也是说，如果某些库只有arm的编译版本，那么并不能在esp上使用。除此以外，对于一些依赖了汇编的代码，也需要更多的ISC兼容性。
