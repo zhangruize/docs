@@ -1,6 +1,6 @@
  贴纸涂鸦板（Sticker Board）是一款独立开发的微信小程序，它允许多人实时在共享画板上进行创作。微信扫码下方二维码即可体验：
 
-<img src="../../pics/sticker%20board1.jpg" width="400" />
+![](../../pics/sticker%20board1.jpg)
 
 ## 功能特性
 
