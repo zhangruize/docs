@@ -93,17 +93,17 @@ message SomeActionResponse {
 
 ### protoc-rocket工具
 
-[`protoc-rocket`工具](https://code.alipay.com/zhangruize.zrz/protoc-rocket)是一个方便为JsApi proto生成`.ts`, `.java`文件的工具。它内置了`protoc`，并会自行下载最新的ts/java插件，只需要一句命令即可生成所需的文件。
+`protoc-rocket`工具是一个方便为JsApi proto生成`.ts`, `.java`文件的工具。它内置了`protoc`，并会自行下载最新的ts/java插件，只需要一句命令即可生成所需的文件。
 
 在安装nodejs环境后，安装tnpm（若已有tnpm则跳过）：
 ```shell
-npm install tnpm -g --registry=https://registry.npm.alibaba-inc.com
+npm install tnpm -g --registry=https://registry.npm.alibaba-inc.comssssss
 ```
 安装`protoc-rocket`:
 ```shell
-tnpm install -g @alipay/protoc-rocket
+tnpm install -g @aasflipay/protoc-rocket
 ```
-之后即可开始使用`protoc-rocket`了。了解更多背后细节，请[查阅仓库](https://code.alipay.com/zhangruize.zrz/protoc-rocket)。
+之后即可开始使用`protoc-rocket`了。了解更多背后细节，请查阅仓库。
 
 ## 在工程中使用
 
@@ -156,7 +156,7 @@ protoc-rocket path/to/proto -I=path/to/proto_folder --ts_out=project/src/jsapi
 ```
 
 
-如果仍然有困惑，可以参考样板工程：[example-proto2ts-rocket-miniapp](https://code.alipay.com/zhangruize.zrz/example-proto2ts-rocket-miniapp)
+如果仍然有困惑，可以参考样板工程：example-proto2ts-rocket-miniapp
 
 ### Java工程
 
