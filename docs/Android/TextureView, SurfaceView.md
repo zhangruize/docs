@@ -489,3 +489,80 @@ public class MyRendererFromLesson1 implements GLSurfaceView.Renderer {
     }
 }
 ```
+
+## 示例：SurfaceView jni 直接写入像素数据
+
+```cpp
+#include <jni.h>
+#include <android/log.h>
+#include <android/native_window.h>
+#include <android/native_window_jni.h>
+#include <android/rect.h>
+#include <memory>
+
+bool _checkException(JNIEnv *env) {
+    if (!env) {
+        return false;
+    }
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        return true;
+    }
+    return false;
+}
+
+extern "C" jint
+Java_me_zrz_eglplayground_SurfaceNative_00024Companion_onSurfaceCreated(JNIEnv *env,
+                                                                        jobject thiz,
+                                                                        jobject holder) {
+    jclass clz = env->GetObjectClass(holder);
+    jmethodID methodId = env->GetMethodID(clz, "getSurface", "()Landroid/view/Surface;");
+    if (_checkException(env)) {
+        __android_log_print(ANDROID_LOG_DEBUG, "zrz", "failed to get method id");
+        return -1;
+    }
+    jobject surface = env->CallObjectMethod(holder, methodId);
+    ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
+    __android_log_print(ANDROID_LOG_DEBUG, "zrz", "width: %d, height: %d",
+                        ANativeWindow_getWidth(window), ANativeWindow_getHeight(window));
+
+    ARect *dirty = new ARect();
+    dirty->left = 100;
+    dirty->top = 100;
+    dirty->bottom = 500;
+    dirty->right = 400;
+    ANativeWindow_Buffer buf = {0};
+    int32_t err;
+    err = ANativeWindow_lock(window, &buf, nullptr);
+    if (err != 0) {
+        __android_log_print(ANDROID_LOG_DEBUG, "zrz", "failed to lock.");
+        return err;
+    }
+    __android_log_print(ANDROID_LOG_DEBUG, "zrz", "buf{format: %d, w: %d, h: %d, stride: %d} ",
+                        buf.format, buf.width,
+                        buf.height, buf.stride);
+
+    uint8_t *bits = (uint8_t *) buf.bits;
+    for (int row = 0; row < buf.height; row++) {
+        for (int col = 0; col < buf.stride; col++) {
+            *bits = col&0xff;
+            bits++;
+            *bits = row&0xff;
+            bits++;
+            *bits = rand()&0xff;
+            bits++;
+        }
+    }
+    err = ANativeWindow_unlockAndPost(window);
+
+    if (err != 0) {
+        __android_log_print(ANDROID_LOG_DEBUG, "zrz", "failed to unlock.");
+        return err;
+    }
+
+    return 0;
+}
+
+```
+编译时，需要在`target_link_libraries`中添加`-landroid`，如果minSdkVersion够高，也可以`-lnativewindow`。
