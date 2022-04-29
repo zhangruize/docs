@@ -78,6 +78,7 @@ configure_file(Step1Config.h.in Step1Config.h)
 if(USE_ALIB)
     add_subdirectory(alib)
     list(APPEND EXTRA_LIBS ALib)
+    add_definitions(-DUSE_ALIB)
 endif()
 
 add_executable(Step2 step1.cpp)
