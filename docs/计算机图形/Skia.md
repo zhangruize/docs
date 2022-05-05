@@ -8,9 +8,7 @@ Skia是一个很适合用来把玩的库。它不仅作为承上启下的关键�
 - Skiko
 - React Native Skia
 
-## 示例：
-
-光栅化画布，绘制后导出为png。
+## 示例：CPU绘制，导出图片
 
 ```cpp
 #include "include/core/SkCanvas.h"
@@ -65,4 +63,87 @@ target_link_libraries(SkiaPlay PUBLIC "${Skia}"
 "-framework ImageIO"
 "-framework ApplicationServices"
 )
+```
+
+## 示例：GPU绘制，导出图片
+```cpp
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSurface.h"
+
+void draw(SkCanvas *canvas) {
+  canvas->save();
+  canvas->translate(SkIntToScalar(128), SkIntToScalar(128));
+  canvas->rotate(SkIntToScalar(45));
+  SkRect rect = SkRect::MakeXYWH(-90.5f, -90.5f, 181.0f, 181.0f);
+  SkPaint paint;
+  paint.setColor(SK_ColorBLUE);
+  canvas->drawRect(rect, paint);
+  canvas->restore();
+}
+
+int main() {
+  GrDirectContext *context =
+      GrDirectContext::MakeGL(GrGLMakeNativeInterface()).release();
+  SkSurface *surface =
+      SkSurface::MakeRenderTarget(context, SkBudgeted::kYes,
+                                  SkImageInfo::MakeN32Premul(300, 300))
+          .release();
+  if (surface == nullptr)
+    abort();
+
+  SkCanvas *canvas = surface->getCanvas();
+  ...同上
+}
+```
+## 示例：结合glfw
+
+```cpp
+int main() {
+  GLFWwindow *window;
+  if (!glfwInit())
+    return -1;
+
+  int w = 640;
+  int h = 480;
+  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  glfwMakeContextCurrent(window);
+
+  GrDirectContext *context =
+      GrDirectContext::MakeGL(GrGLMakeNativeInterface()).release();
+
+  GrGLFramebufferInfo framebufferInfo;
+  framebufferInfo.fFBOID = 0;
+  framebufferInfo.fFormat = GL_RGBA8;
+  SkColorType colorType = kRGBA_8888_SkColorType;
+  GrBackendRenderTarget backendRenderTarget(w, h, 0, 0, framebufferInfo);
+  SkSurface *surface =
+      SkSurface::MakeFromBackendRenderTarget(context, backendRenderTarget,
+                                             kBottomLeft_GrSurfaceOrigin,
+                                             colorType, nullptr, nullptr)
+          .release();
+
+  if (surface == nullptr)
+    abort();
+
+  SkCanvas *canvas = surface->getCanvas();
+
+  glfwSwapInterval(1);
+
+  while (!glfwWindowShouldClose(window)) {
+    glfwWaitEvents();
+    SkPaint paint;
+    paint.setColor(SK_ColorWHITE);
+    canvas->drawPaint(paint);
+    paint.setColor(SK_ColorBLUE);
+    canvas->drawRect({100, 200, 300, 500}, paint);
+    context->flush();
+
+    glfwSwapBuffers(window);
+  }
+
+  glfwTerminate();
+  return 0;
+}
 ```
