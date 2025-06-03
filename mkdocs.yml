@@ -1,8 +1,8 @@
-site_name: Zrek Blog
+site_name: Zhang Ruize's Blog
 theme:
   name: material
-  logo: assets/z.png
-  favicon: assets/z.png
+  logo: pics/z.jpeg
+  favicon: pics/z.jpeg
 
 markdown_extensions:
   - pymdownx.highlight

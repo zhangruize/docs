@@ -215,8 +215,8 @@ protoc-rocket path/to/proto -I=path/to/proto_folder java_out=project/src/main/ja
 
 JsApi proto可以轻松获取JsApi的各类信息，也包括注释信息。从而可以轻松输出JsApi文档，可以大幅方便对内、对外的查阅。如下：
 
-![](../assets/mk1.jpg)
-![](../assets/mk2.jpg)
+![](../pics/mk1.jpg)
+![](../pics/mk2.jpg)
 
 ## Q&A
 
