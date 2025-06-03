@@ -16,13 +16,19 @@
 
 我预计仍然会寻求工作并工作到约35岁（2029年）。并希望有朝一日可以发布自己的独立游戏，将我的有趣思考和灵感带给更多人。
 
+----
+
 ## 简历下载
 
 <a href="assets/简历-张瑞泽.pdf">点击此处</a>，更新于2022-4月。
 
+----
+
 ## 工作项目
 
 我在几家互联网公司工作过，特别是在字节跳动的工作使我成长较多。更多细节请参阅简历文件。
+
+----
 
 ## 个人项目
 
@@ -48,7 +54,10 @@
 ### 音频可视化类
 
 - 2024年
+<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
     - NUNA 
+<video src="https://zhangruize.github.io/docs/assets/c1.mp4" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
+<img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
     - WE PRAY
 
 ### 计算图形类
@@ -69,15 +78,21 @@
     - **银谷** 2020-3月 描述寒冷、空洞环境的作品
     - **随风** 2020-5月 吉他录音类作品，原曲 weather cock
 
+----
+
 ## 我的观点集合
 
-[这些观点](Post/index.md)构成了我的核心认知和判断，我长期认可这里汇总的个人观点。
+[这些观点](post.md)构成了我的核心认知和判断，我长期认可这里汇总的个人观点。
+
+----
 
 ## 我的摄影
 
-我也是个喜欢摄影的人，希望有更多时间和机会去拍摄。查看我的[摄影集合](摄影/index.md)。
+我也是个喜欢摄影的人，希望有更多时间和机会去拍摄。查看我的[摄影集合](photograph.md)。
 
-### 提醒
+----
+
+## 提醒
 
 您大可不必阅读此站点的技术原理相关内容。
 
