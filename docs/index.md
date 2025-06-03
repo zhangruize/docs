@@ -31,9 +31,9 @@
 我在几家互联网公司工作过，特别是在字节跳动的工作使我成长较多。更多细节请参阅简历文件。
 
 <div class="index-page-images">
-<img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
-<img src="https://zhangruize.github.io/docs/pics/zfb.svg" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
 <img src="https://zhangruize.github.io/docs/pics/life.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
+<img src="https://zhangruize.github.io/docs/pics/zfb.svg" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
+<img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/jd.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
 </div>
 
