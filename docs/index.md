@@ -28,11 +28,16 @@
 
 我在几家互联网公司工作过，特别是在字节跳动的工作使我成长较多。更多细节请参阅简历文件。
 
+<img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+
 ----
 
 ## 个人项目
 
 ### 技术探索类
+
+<img src="https://zhangruize.github.io/docs/pics/sticker board2.jpg" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+
 
 (*代表实验性质项目，未对外可用，点击标题可以跳转详情页)
 
@@ -52,15 +57,20 @@
     - **LoL Camera** 使用AR Core编写的LoL AR拍照类应用。维护截止至2019年。
 
 ### 音频可视化类
+<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/v7.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+<img src="https://zhangruize.github.io/docs/pics/v2.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 
-- 2024年
-<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
-    - NUNA 
-<video src="https://zhangruize.github.io/docs/pics/v6.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/>·
-<img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
+- 2024年    
+    - NUNA
     - WE PRAY
 
 ### 计算图形类
+<img src="https://zhangruize.github.io/docs/pics/flower.gif" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/lineargradient1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/ffsn.gif" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/Path tracing3.jpg" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 
 - 2022年
     - **[flower](计算机图形/OpenGL%20shader%20language%20(flower).md)** 使用glsl，动态的花朵和动态的颜色
