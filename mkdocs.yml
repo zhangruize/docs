@@ -1,6 +1,6 @@
 site_name: Zrek Blog
 theme:
-  name: terminal
+  name: material
   logo: assets/z.png
   favicon: assets/z.png
 
