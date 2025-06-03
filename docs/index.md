@@ -31,19 +31,19 @@
 (*代表实验性质项目，未对外可用，点击标题可以跳转详情页)
 
 - 2025年
-  - **cx*** 多agent的自动化交易策略工作流。基于CoinMarketCap、TradingView等站点数据。
+    - **cx*** 多agent的自动化交易策略工作流。基于CoinMarketCap、TradingView等站点数据。
 - 2024年
-  - **wsjrpc*** AI控制多设备能力框架，基于websocket, jsonrpc，早于MCP协议。
+    - **wsjrpc*** AI控制多设备能力框架，基于websocket, jsonrpc，早于MCP协议。
 - 2022年
-  - **logdog*** 对adb logcat自定义过滤、批处理。
-  - **fretboard** 在终端打印吉他指板和弦、音阶图。
+    - **logdog*** 对adb logcat自定义过滤、批处理。
+    - **fretboard** 在终端打印吉他指板和弦、音阶图。
 - 2021年
-  - **[Sticker Board 贴纸涂鸦板](跨端技术/小程序/Sticker%20Board项目.md)** 微信小程序，现已停服。
-  - **[lx](Lx/无外部依赖创造一个语言跑起来.md)*** 使用typescript写的零外部依赖玩具语言，目前可编译到jvm class。
-  - **mx***  使用electron写的桌面端音乐应用，替换桌面版网易云音乐。
-  - **zrek app*** 使用各种方式开发的个人安卓应用，功能上替代微博、网易云音乐。微博模块完全使用Jetpack编写，音乐模块使用Compose编写，博客模块使用Flutter编写，后续再补充试验场来引入React Native和lx。
+    - **[Sticker Board 贴纸涂鸦板](跨端技术/小程序/Sticker%20Board项目.md)** 微信小程序，现已停服。
+    - **[lx](Lx/无外部依赖创造一个语言跑起来.md)*** 使用typescript写的零外部依赖玩具语言，目前可编译到jvm class。
+    - **mx***  使用electron写的桌面端音乐应用，替换桌面版网易云音乐。
+    - **zrek app*** 使用各种方式开发的个人安卓应用，功能上替代微博、网易云音乐。微博模块完全使用Jetpack编写，音乐模块使用Compose编写，博客模块使用Flutter编写，后续再补充试验场来引入React Native和lx。
 - 2019年
-  - **LoL Camera** 使用AR Core编写的LoL AR拍照类应用。维护截止至2019年。
+    - **LoL Camera** 使用AR Core编写的LoL AR拍照类应用。维护截止至2019年。
 
 ### 音频可视化类
 
@@ -54,20 +54,20 @@
 ### 计算图形类
 
 - 2022年
-  - **[flower](计算机图形/OpenGL%20shader%20language%20(flower).md)** 使用glsl，动态的花朵和动态的颜色
-  - **[complex linear gradient](计算机图形/Linear%20gradient.md)** 使用canvas，随机的线性渐变图案，类似Windows vista时代
-  - **[flow field](计算机图形/Perlin%20noise(Flow%20field).md)** 使用canvas和simple noise，粒子在场中像水流运动
-  - **[path tracing](计算机图形/Path%20tracing%20路径追踪.md)** 使用c++基于smallpt项目拓展的路径追踪渲染程序
+    - **[flower](计算机图形/OpenGL%20shader%20language%20(flower).md)** 使用glsl，动态的花朵和动态的颜色
+    - **[complex linear gradient](计算机图形/Linear%20gradient.md)** 使用canvas，随机的线性渐变图案，类似Windows vista时代
+    - **[flow field](计算机图形/Perlin%20noise(Flow%20field).md)** 使用canvas和simple noise，粒子在场中像水流运动
+    - **[path tracing](计算机图形/Path%20tracing%20路径追踪.md)** 使用c++基于smallpt项目拓展的路径追踪渲染程序
 
 ### 音乐制作类
 
 作品试听请访问[网易音乐人主页](https://music.163.com/#/artist?id=12083526)
 
 - 2020年
-  - **Fly With Me** 2020-1月 电子类音乐作品
-  - **追寻** 2020-1月 抒情类钢琴、吉他音乐作品
-  - **银谷** 2020-3月 描述寒冷、空洞环境的作品
-  - **随风** 2020-5月 吉他录音类作品，原曲 weather cock
+    - **Fly With Me** 2020-1月 电子类音乐作品
+    - **追寻** 2020-1月 抒情类钢琴、吉他音乐作品
+    - **银谷** 2020-3月 描述寒冷、空洞环境的作品
+    - **随风** 2020-5月 吉他录音类作品，原曲 weather cock
 
 ## 我的观点集合
 
