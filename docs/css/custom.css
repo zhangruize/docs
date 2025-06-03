@@ -1,0 +1,4 @@
+/* 覆盖MkDocs主题对特定容器内图片高度的限制 */
+.index-page-images img {
+    height: initial !important; /* 使用 initial 关键字尝试恢复原始指定的 height 或 style 高度 */
+}

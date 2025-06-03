@@ -28,9 +28,11 @@
 
 我在几家互联网公司工作过，特别是在字节跳动的工作使我成长较多。更多细节请参阅简历文件。
 
-<img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
+<div class="index-page-images">
+<img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/zfb.svg" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
 <img src="https://zhangruize.github.io/docs/pics/life.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
+</div>
 
 ----
 
@@ -38,9 +40,11 @@
 
 ### 技术探索类
 
+<div class="index-page-images">
 <img src="https://zhangruize.github.io/docs/pics/sticker board2.jpg" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
-<img src="https://zhangruize.github.io/docs/pics/frets.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
-<img src="https://zhangruize.github.io/docs/pics/lx3.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<img src="https://zhangruize.github.io/docs/pics/frets.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+<img src="https://zhangruize.github.io/docs/pics/lx3.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+</div>
 
 (*代表实验性质项目，未对外可用，点击标题可以跳转详情页)
 
@@ -60,10 +64,12 @@
     - **LoL Camera** 使用AR Core编写的LoL AR拍照类应用。维护截止至2019年。
 
 ### 音频可视化类
-<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
-<img src="https://zhangruize.github.io/docs/pics/v7.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+<div class="index-page-images">
+<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+<img src="https://zhangruize.github.io/docs/pics/v7.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
-<img src="https://zhangruize.github.io/docs/pics/v2.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+<img src="https://zhangruize.github.io/docs/pics/v2.png" width="100px" height="100px" style="border-radius:20px; object-fit: cover;"/>
+</div>
 
 - 2024年    
     - NUNA

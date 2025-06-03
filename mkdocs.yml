@@ -16,3 +16,6 @@ extra:
 plugins:
   - search
   - awesome-pages
+
+extra_css:
+  - css/custom.css
