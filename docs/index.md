@@ -48,8 +48,8 @@
 ### 音频可视化类
 
 - 2024年
-  - NUNA 
-  - WE PRAY
+    - NUNA 
+    - WE PRAY
 
 ### 计算图形类
 
