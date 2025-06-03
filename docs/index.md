@@ -56,7 +56,7 @@
 - 2024年
 <img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
     - NUNA 
-<video src="https://zhangruize.github.io/docs/assets/c1.mp4" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
+<video src="https://zhangruize.github.io/docs/pics/v6.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/>·
 <img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" align="right" style="margin-right:20px;border-radius:20px"/></a>
     - WE PRAY
 
