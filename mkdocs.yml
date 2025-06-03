@@ -1,6 +1,6 @@
 site_name: Zrek Blog
 theme:
-  name: material
+  name: bootstrap386
   logo: assets/z.png
   favicon: assets/z.png
 
