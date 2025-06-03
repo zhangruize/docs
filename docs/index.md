@@ -41,12 +41,13 @@
 ### 技术探索类
 
 <div class="index-page-images">
+<img src="https://zhangruize.github.io/docs/pics/wsjrpc.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/sticker board2.jpg" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/frets.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/lx3.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 </div>
 
-(*代表实验性质项目，未对外可用，点击标题可以跳转详情页)
+(*代表实验性质项目，未对外可用)
 
 - 2025年
     - **cx*** 多agent的自动化交易策略工作流。基于CoinMarketCap、TradingView等站点数据。
@@ -65,21 +66,23 @@
 
 ### 音频可视化类
 <div class="index-page-images">
-<img src="https://zhangruize.github.io/docs/pics/v6.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/v7.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/v2.png" width="100px" height="100px" style="border-radius:20px; object-fit: cover;"/>
 </div>
 
 - 2024年    
-    - NUNA
-    - WE PRAY
+    - [NUNA](assets/n1.mp4)
+    - [WE PRAY](assets/c1.mp4)
+    - [INK](assets/c2.mp4)
 
 ### 计算图形类
+<div class="index-page-images">
 <img src="https://zhangruize.github.io/docs/pics/flower.gif" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/lineargradient1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/ffsn.gif" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/Path tracing3.jpg" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
+</div>
 
 - 2022年
     - **[flower](计算机图形/OpenGL%20shader%20language%20(flower).md)** 使用glsl，动态的花朵和动态的颜色
