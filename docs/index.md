@@ -28,7 +28,7 @@
 
 ### 技术探索类
 
-(*代表实验性质项目，未对外可用)
+(*代表实验性质项目，未对外可用，点击标题可以跳转详情页)
 
 - 2025年
   - **cx*** 多agent的自动化交易策略工作流。基于CoinMarketCap、TradingView等站点数据。
@@ -45,15 +45,19 @@
 - 2019年
   - **LoL Camera** 使用AR Core编写的LoL AR拍照类应用。维护截止至2019年。
 
+### 音频可视化类
+
+- 2024年
+  - NUNA 
+  - WE PRAY
+
 ### 计算图形类
 
-详情请参阅“计算机图形”section
-
 - 2022年
-  - **flower** 使用glsl，动态的花朵和动态的颜色
-  - **complex linear gradient** 使用canvas，随机的线性渐变图案，类似Windows vista时代
-  - **flow field** 使用canvas和simple noise，粒子在场中像水流运动
-  - **path tracing** 使用c++基于smallpt项目拓展的路径追踪渲染程序
+  - **[flower](计算机图形/OpenGL%20shader%20language%20(flower).md)** 使用glsl，动态的花朵和动态的颜色
+  - **[complex linear gradient](计算机图形/Linear%20gradient.md)** 使用canvas，随机的线性渐变图案，类似Windows vista时代
+  - **[flow field](计算机图形/Perlin%20noise(Flow%20field).md)** 使用canvas和simple noise，粒子在场中像水流运动
+  - **[path tracing](计算机图形/Path%20tracing%20路径追踪.md)** 使用c++基于smallpt项目拓展的路径追踪渲染程序
 
 ### 音乐制作类
 
@@ -64,6 +68,14 @@
   - **追寻** 2020-1月 抒情类钢琴、吉他音乐作品
   - **银谷** 2020-3月 描述寒冷、空洞环境的作品
   - **随风** 2020-5月 吉他录音类作品，原曲 weather cock
+
+## 我的观点集合
+
+[这些观点](Post/index.md)构成了我的核心认知和判断，我长期认可这里汇总的个人观点。
+
+## 我的摄影
+
+我也是个喜欢摄影的人，希望有更多时间和机会去拍摄。查看我的[摄影集合](摄影/index.md)。
 
 ### 提醒
 
