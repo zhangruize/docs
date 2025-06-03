@@ -18,9 +18,11 @@
 
 ----
 
-## 简历下载
+## 简历
 
-<a href="assets/简历-张瑞泽.pdf">点击此处</a>，更新于2022-4月。
+点击下载<a href="assets/简历-张瑞泽.pdf">我的简历</a>，更新于2025-6月。
+
+厌倦了阅读？你也可以向Grok[提问关于我的问题](https://grok.com/share/bGVnYWN5_aec12f6e-c350-4efa-96bb-d491ad56cfbf)。
 
 ----
 
