@@ -75,9 +75,9 @@
 </div>
 
 - 2024年    
-    - [NUNA](assets/n1.mp4)
-    - [WE PRAY](assets/c1.mp4)
-    - [INK](assets/c2.mp4)
+    - [NUNA](assets/n1.mp4) 点击以查看录屏片段
+    - [WE PRAY](assets/c2.mp4) 点击以查看录屏片段
+    - [INK](assets/c1.mp4) 点击以查看录屏片段
 
 ### 计算图形类
 <div class="index-page-images">
