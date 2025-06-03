@@ -32,6 +32,7 @@
 <img src="https://zhangruize.github.io/docs/pics/bytedance.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/> 
 <img src="https://zhangruize.github.io/docs/pics/zfb.svg" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
 <img src="https://zhangruize.github.io/docs/pics/life.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
+<img src="https://zhangruize.github.io/docs/pics/jd.png" width="100" height="100" style="border-radius:20px; object-fit: contain;"/> 
 </div>
 
 ----
@@ -104,13 +105,13 @@
 
 ## 我的观点集合
 
-[这些观点](post.md)构成了我的核心认知和判断，我长期认可这里汇总的个人观点。
+[这些观点](posts.md)构成了我的核心认知和判断，我长期认可这里汇总的个人观点。
 
 ----
 
 ## 我的摄影
 
-我也是个喜欢摄影的人，希望有更多时间和机会去拍摄。查看我的[摄影集合](photograph.md)。
+我也是个喜欢摄影的人，希望有更多时间和机会去拍摄。查看我的[摄影集合](photos.md)。
 
 ----
 
