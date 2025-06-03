@@ -1,2 +1,3 @@
 mkdocs-awesome-pages-plugin
 mkdocs-bootstrap386
+mkdocs-terminal

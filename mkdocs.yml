@@ -1,6 +1,6 @@
 site_name: Zrek Blog
 theme:
-  name: bootstrap386
+  name: terminal
   logo: assets/z.png
   favicon: assets/z.png
 
