@@ -71,7 +71,8 @@
 <div class="index-page-images">
 <img src="https://zhangruize.github.io/docs/pics/v7.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
 <img src="https://zhangruize.github.io/docs/pics/v1.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
-<img src="https://zhangruize.github.io/docs/pics/v2.png" width="100px" height="100px" style="border-radius:20px; object-fit: cover;"/>
+<img src="https://zhangruize.github.io/docs/pics/v2.png" width="100" height="100" style="border-radius:20px; object-fit: cover;"/>
+<video src="pics/c1.mp4" autoplay loop muted width="100" height="100" style="border-radius:20px; object-fit: cover;"></video>
 </div>
 
 - 2024年    
