@@ -22,7 +22,7 @@
 
 点击下载<a href="assets/简历-张瑞泽.pdf">我的简历</a>，更新于2025-6月。
 
-厌倦了阅读？你也可以向Grok[提问关于我的问题](https://grok.com/share/bGVnYWN5_aec12f6e-c350-4efa-96bb-d491ad56cfbf)。
+厌倦了阅读？你也可以向Grok[提问关于我的问题](https://grok.com/share/bGVnYWN5_cc9d3b1b-a281-4307-82b5-bdc826137005)。
 
 ----
 
