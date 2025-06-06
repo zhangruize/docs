@@ -1,0 +1,3487 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/">
+      
+      
+        <link rel="next" href="../%E7%83%AD%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/">
+      
+      
+      <link rel="icon" href="../../pics/z.jpeg">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>渲染架构 - Zhang Ruize's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zhang Ruize&#39;s Blog" class="md-header__button md-logo" aria-label="Zhang Ruize's Blog" data-md-component="logo">
+      
+  <img src="../../pics/z.jpeg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zhang Ruize's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              渲染架构
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zhang Ruize&#39;s Blog" class="md-nav__button md-logo" aria-label="Zhang Ruize's Blog" data-md-component="logo">
+      
+  <img src="../../pics/z.jpeg" alt="logo">
+
+    </a>
+    Zhang Ruize's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于我
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../photos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Photos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../posts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Posts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Android
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Activity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Activity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Binder%20IPC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Binder IPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Dex%20File/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dex File
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Jetpack%20%E7%8E%B0%E4%BB%A3%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jetpack 现代安卓开发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LeakCanary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LeakCanary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Looper%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Looper Handler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MMKV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MMKV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MultiDex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MultiDex
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OkHttp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OkHttp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Retrofit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retrofit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shared%20Preference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Preferences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TextureView%2C%20SurfaceView/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TextureView, SurfaceView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UUID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UUID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ViewModel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewModel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    事件分发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8C%85%E7%AD%BE%E5%90%8D%E3%80%81%E9%AA%8C%E8%AF%81%E3%80%81%E5%8A%A0%E5%9B%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    包签名、验证、加固
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    性能优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%8F%92%E4%BB%B6%E5%8C%96%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    插件化方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9B%9D%E5%85%89%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    曝光埋点方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渲染机制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    渲染架构
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    渲染架构
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      合成
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="合成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hwc" class="md-nav__link">
+    <span class="md-ellipsis">
+      HWC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      VSync
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      生产与消费
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="生产与消费">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#surfaceflinger" class="md-nav__link">
+    <span class="md-ellipsis">
+      SurfaceFlinger
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bufferqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      BufferQueue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用进程生产
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#surfacecanvasapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Surface侧获取CanvasAPI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%83%AD%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    热修复方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    构建优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自动化测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Bito
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Bito
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Bito/Bito%20VSCode%20Extension/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bito VSCode Extension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Bito/Bito-TSX/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bito TSX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            CI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CI/Github%26Gitlab-CI%26CD%E7%90%86%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Github&Gitlab CI&CD理解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CXX
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            CXX
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CXX/makefile%20cmake%20gn%20ninja/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Makefile cmake gn ninja
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gradle
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Gradle
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Gradle/gradle%20plugin/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gradle plugin
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Java
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/JVM%20TI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM TI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM内存模型
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Jar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Java%E5%B9%B6%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java并发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Jni/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jni
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/List%20Queue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    List Queue
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Map
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/RxJava/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RxJava
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/SPI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    四种引用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    构造方法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    类加载
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Javascript
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Javascript
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/Javascript%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Javascript开发环境部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/JsApi%20proto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JsApi Proto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/js%20this%2C%20prototype/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Js this, prototype
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kotlin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Kotlin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20Flow%20Channel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin Flow Channel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20in%20out%20%E5%8D%8F%E5%8F%98%E3%80%81%E9%80%86%E5%8F%98/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin in out 协变、逆变
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20%E5%8D%8F%E7%A8%8B%20%E6%8C%82%E8%B5%B7%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin 协程 挂起函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Lx
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Lx
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Lx/%E6%97%A0%E5%A4%96%E9%83%A8%E4%BE%9D%E8%B5%96%E5%88%9B%E9%80%A0%E4%B8%80%E4%B8%AA%E8%AF%AD%E8%A8%80%E8%B7%91%E8%B5%B7%E6%9D%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    无外部依赖创造一个语言跑起来
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rust
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            Rust
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Rust/rust/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    操作系统、Linux
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            操作系统、Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/Linux%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E3%80%81%E6%A0%87%E5%87%86%E5%BA%93/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux系统调用、标准库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/cpu-mcu-isc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cpu mcu isc
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    多任务操作系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    算法
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            算法
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    二叉树
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    算法整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    编码、序列化
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            编码、序列化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/Json/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Json
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/ProtoBuffer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ProtoBuffer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/Unicode%20Utf8%20Base64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unicode Utf8 Base64
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数字签名
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/%E8%A1%A5%E7%A0%81%E8%BF%90%E7%AE%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    补码运算
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机图形
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            计算机图形
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Linear%20gradient/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linear gradient
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/OpenGL%20shader%20language%20%28flower%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenGL shader language (flower)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/OpenGL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenGL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Path%20tracing%20%E8%B7%AF%E5%BE%84%E8%BF%BD%E8%B8%AA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Path tracing 路径追踪
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Perlin%20noise%28Flow%20field%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Perlin noise(Flow field)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Skia/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skia
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/alpha%20composition/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alpha composition
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机网络
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            计算机网络
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    计算机网络
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    设计模式
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            设计模式
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/MVC%20MVP%20MVVM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MVC MVP MVVM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    依赖注入
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9F%BA%E4%BA%8E%E8%B0%83%E7%94%A8%E3%80%81%E5%9F%BA%E4%BA%8E%E4%BA%8B%E4%BB%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    基于调用、基于事件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%BD%8D%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    服务定位器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    跨端技术
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            跨端技术
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_1" id="__nav_20_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Compose
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_1">
+            <span class="md-nav__icon md-icon"></span>
+            Compose
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/Compose/Compose%E7%90%86%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Compose理解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_2" id="__nav_20_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Electron
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_2">
+            <span class="md-nav__icon md-icon"></span>
+            Electron
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/electron/%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_3" id="__nav_20_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Flutter
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_3">
+            <span class="md-nav__icon md-icon"></span>
+            Flutter
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/flutter/%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_4" id="__nav_20_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    小程序
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_4">
+            <span class="md-nav__icon md-icon"></span>
+            小程序
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/%E5%B0%8F%E7%A8%8B%E5%BA%8F/Sticker%20Board%E9%A1%B9%E7%9B%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sticker Board项目
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    其他
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            其他
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%85%B6%E4%BB%96/%E5%90%89%E4%BB%96%E6%8C%87%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    吉他指型推导
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      合成
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="合成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hwc" class="md-nav__link">
+    <span class="md-ellipsis">
+      HWC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      VSync
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      生产与消费
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="生产与消费">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#surfaceflinger" class="md-nav__link">
+    <span class="md-ellipsis">
+      SurfaceFlinger
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bufferqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      BufferQueue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用进程生产
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#surfacecanvasapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Surface侧获取CanvasAPI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>渲染架构</h1>
+
+<p>我们将从底向上来描述安卓的渲染架构。</p>
+<h2 id="_1">合成</h2>
+<p>合成是SurfaceFlinger主要由SurfaceFlinger进行，包括GPU和HWC两种方式结合，亦或单种方式。</p>
+<h3 id="gpu">GPU</h3>
+<p>Android 使用 OpenGL ES (GLES) API 渲染图形。为了创建 GLES 上下文并为 GLES 渲染提供窗口系统，Android 使用 EGL 库。GLES 调用用于渲染纹理多边形，而 EGL 调用用于将渲染放到屏幕上。</p>
+<p>即，在安卓上：</p>
+<ul>
+<li>硬件加速的绘制操作，使用OpenGL ES(GLES)库</li>
+<li>系统原生窗口管理，使用<a href="https://www.khronos.org/egl">EGL</a>库</li>
+</ul>
+<blockquote>
+<p>EGL™ 是 Khronos 渲染 API（如 OpenGL ES 或 OpenVG）与底层原生平台窗口系统之间的接口。它处理图形上下文管理、表面/缓冲区绑定和渲染同步，并使用其他 Khronos API 实现高性能、加速、混合模式的 2D 和 3D 渲染。EGL 还提供 Khronos 之间的互操作功能，以实现 API 之间的数据高效传输——例如在运行 OpenMAX AL 的视频子系统和运行 OpenGL ES 的 GPU 之间。</p>
+</blockquote>
+<p>再换句话说，绘制操作是OpenGL ES库，而绘制上下文、窗口、配置管理是EGL库。</p>
+<h3 id="hwc">HWC</h3>
+<p>在架构上，安卓并没有完全采用GPU一种形式上屏，而是还提供了HAL（硬件混合渲染器）。作为 HAL，其实现是特定于设备的，而且通常由显示硬件原始设备制造商 (OEM) 完成。</p>
+<p>显示处理器功能差异很大。叠加层的数量（无论层是否可以旋转或混合）以及对定位和重叠的限制很难通过 API 表达。为了适应这些选项，HWC 会执行以下计算：</p>
+<ul>
+<li>SurfaceFlinger 向 HWC 提供一个完整的层列表，并询问“您希望如何处理这些层？”</li>
+<li>HWC 的响应方式是将每个层标记为设备或客户端合成。</li>
+<li>SurfaceFlinger 会处理所有客户端，将输出缓冲区传送到 HWC，并让 HWC 处理其余部分。</li>
+</ul>
+<p>由于硬件供应商可以定制决策代码，因此可以在每台设备上实现最佳性能。详见<a href="https://source.android.com/devices/graphics/hwc">这里</a>。</p>
+<p>由此，最终对显示器设备的<code>FrameBuffer</code>操作对于每一帧其实会分三种情况：</p>
+<ul>
+<li>GLES - GPU 合成所有图层，直接写入输出缓冲区。HWC 不参与合成。</li>
+<li>MIXED - GPU 将一些图层合成到帧缓冲区，由 HWC 合成帧缓冲区和剩余的图层，直接写入输出缓冲区。</li>
+<li>HWC - HWC 合成所有图层并直接写入输出缓冲区。</li>
+</ul>
+<p>对于HWC无法处理的层，需要SurfaceFlinger通过GPU以OpenGLES来合成。此时SurfaceFlinger 只是充当另一个 OpenGL ES 客户端。</p>
+<h3 id="vsync">VSync</h3>
+<p>该事件由HWC来生成，发送给SurfaceFlinger，<a href="https://source.android.com/devices/graphics/implement-vsync">详见</a>.</p>
+<h2 id="_2">生产与消费</h2>
+<h3 id="surfaceflinger">SurfaceFlinger</h3>
+<p>SurfaceFlinger为应用的窗口创建“层”，层包括了<code>BufferQueue</code>以及<code>SurfaceControl</code>，前者用于提供一个跨进程、零拷贝的图形帧队列，后者提供一些控制相关操作。后者一般交由<code>windowManagerSerivce</code>管理，而前者一般最后封装为应用进程内的<code>Surface</code>也即ndk中的<code>ANativeWindow</code>，来由应用进程内负责提供生产数据。</p>
+<h3 id="bufferqueue">BufferQueue</h3>
+<p>BufferQueue是一个连接图形数据的生产者、消费者的纽带，它按需分配图形缓冲区，比如生产者速度大于消费者时，需要分配更多图形缓冲区来入列。图形缓冲区由HAL的<code>gralloc</code>来分配，分配后的图形缓冲区以句柄的形式可以在<code>binder</code> IPC中跨进程传递。由此它自身不会产生拷贝操作。它提供三种工作模式：同步阻塞（生产者生产入列后阻塞等待消费者消费后可以获取新的缓冲区）、非阻塞（可以不断获取新的缓冲区直到上限时捕获错误）、丢弃（可以不断获取缓冲区，但仅最新的会被消费，之前未被消费的会被丢弃）。</p>
+<p><code>BufferQueue</code>队里中的图形缓冲区的数据核心是<code>GraphicBuffer</code>，而它也可以由<code>ANativeWindow</code>所访问。</p>
+<h3 id="_3">应用进程生产</h3>
+<p>在应用进程中，生产图形数据可以有如下几种方式：</p>
+<ul>
+<li>ViewRootImpl的Surface，会对应到View tree下的Java侧的Canvas API。</li>
+<li>SurfaceView，申请一个独立的Surface。</li>
+<li>TextureView，它需要SurfaceTexture，一种将Surface的图像生产转为GLES的纹理，并可被后续继续使用。</li>
+</ul>
+<p>从本质上来说，始终是依靠Surface来构建图形生产。</p>
+<p><code>Surface#lockHardwareCanvas</code>或<code>Surface#lockCanvas</code>来获得Canvas API，Canvas API是对Skia的Java侧包装。在native下，也可以直接用Skia。相关示例可以参见<code>SurfaceView, TextureView</code>。</p>
+<h3 id="surfacecanvasapi">Surface侧获取CanvasAPI</h3>
+<p>Surface侧获取CanvasAPI，以最新的实现来看，会构建一个<code>HardwareRenderer</code>:</p>
+<p><div class="highlight"><pre><span></span><code><span class="kd">class</span> <span class="nc">Surface</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HwuiContext</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">RenderNode</span><span class="w"> </span><span class="n">mRenderNode</span><span class="p">;</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">HardwareRenderer</span><span class="w"> </span><span class="n">mHardwareRenderer</span><span class="p">;</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">RecordingCanvas</span><span class="w"> </span><span class="n">mCanvas</span><span class="p">;</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">mIsWideColorGamut</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">HwuiContext</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">isWideColorGamut</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">mRenderNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderNode</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;HwuiCanvas&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+<span class="w">            </span><span class="n">mHardwareRenderer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HardwareRenderer</span><span class="p">();</span>
+<span class="w">            </span><span class="n">mHardwareRenderer</span><span class="p">.</span><span class="na">setContentRoot</span><span class="p">(</span><span class="n">mRenderNode</span><span class="p">);</span>
+<span class="w">            </span><span class="n">mHardwareRenderer</span><span class="p">.</span><span class="na">setSurface</span><span class="p">(</span><span class="n">Surface</span><span class="p">.</span><span class="na">this</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">Canvas</span><span class="w"> </span><span class="nf">lockCanvas</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">mCanvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mRenderNode</span><span class="p">.</span><span class="na">beginRecording</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">mCanvas</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">unlockAndPost</span><span class="p">(</span><span class="n">Canvas</span><span class="w"> </span><span class="n">canvas</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">...</span>
+<span class="w">            </span><span class="n">mRenderNode</span><span class="p">.</span><span class="na">endRecording</span><span class="p">();</span>
+<span class="w">            </span><span class="n">mHardwareRenderer</span><span class="p">.</span><span class="na">createRenderRequest</span><span class="p">()</span>
+<span class="w">                    </span><span class="p">.</span><span class="na">setVsyncTime</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">nanoTime</span><span class="p">())</span>
+<span class="w">                    </span><span class="p">.</span><span class="na">syncAndDraw</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+它内部持有一个<code>rootNode: RenderNode</code>作为根节点，还会构造<code>RenderProxy</code>：
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">HardwareRenderer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mRootNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderNode</span><span class="p">.</span><span class="na">adopt</span><span class="p">(</span><span class="n">nCreateRootRenderNode</span><span class="p">());</span>
+<span class="w">        </span><span class="n">mNativeProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nCreateProxy</span><span class="p">(</span><span class="o">!</span><span class="n">mOpaque</span><span class="p">,</span><span class="w"> </span><span class="n">mRootNode</span><span class="p">.</span><span class="na">mNativeRenderNode</span><span class="p">);</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<code>RenderProxy</code>构造：
+<div class="highlight"><pre><span></span><code><span class="n">RenderProxy</span><span class="o">::</span><span class="n">RenderProxy</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">translucent</span><span class="p">,</span><span class="w"> </span><span class="n">RenderNode</span><span class="o">*</span><span class="w"> </span><span class="n">rootRenderNode</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">IContextFactory</span><span class="o">*</span><span class="w"> </span><span class="n">contextFactory</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">mRenderThread</span><span class="p">(</span><span class="n">RenderThread</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()),</span><span class="w"> </span><span class="n">mContext</span><span class="p">(</span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mRenderThread</span><span class="p">.</span><span class="n">queue</span><span class="p">().</span><span class="n">runSync</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">CanvasContext</span><span class="o">*</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">CanvasContext</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">mRenderThread</span><span class="p">,</span><span class="w"> </span><span class="n">translucent</span><span class="p">,</span><span class="w"> </span><span class="n">rootRenderNode</span><span class="p">,</span><span class="w"> </span><span class="n">contextFactory</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">mDrawFrameTask</span><span class="p">.</span><span class="n">setContext</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mRenderThread</span><span class="p">,</span><span class="w"> </span><span class="n">mContext</span><span class="p">,</span><span class="w"> </span><span class="n">rootRenderNode</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">pthread_gettid_np</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">()),</span><span class="w"> </span><span class="n">getRenderThreadTid</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div>
+这里会创建<code>CanvasContext</code>, 并关联到<code>DrawFrameTask</code>。之后在绘制时，会由<code>DrawFrameTask</code>来执行：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">DrawFrameTask::run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CC_LIKELY</span><span class="p">(</span><span class="n">canDrawThisFrame</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">dequeueBufferDuration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+再看<code>CanvasContext</code>的<code>draw</code>：
+<div class="highlight"><pre><span></span><code><span class="n">nsecs_t</span><span class="w"> </span><span class="nf">CanvasContext::draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">drew</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mRenderPipeline</span><span class="o">-&gt;</span><span class="n">draw</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="n">windowDirty</span><span class="p">,</span><span class="w"> </span><span class="n">dirty</span><span class="p">,</span><span class="w"> </span><span class="n">mLightGeometry</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mLayerUpdateQueue</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">mContentDrawBounds</span><span class="p">,</span><span class="w"> </span><span class="n">mOpaque</span><span class="p">,</span><span class="w"> </span><span class="n">mLightInfo</span><span class="p">,</span><span class="w"> </span><span class="n">mRenderNodes</span><span class="p">,</span>
+<span class="w">                                      </span><span class="o">&amp;</span><span class="p">(</span><span class="n">profiler</span><span class="p">()));</span>
+<span class="w">    </span><span class="n">waitOnFences</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">didSwap</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">mRenderPipeline</span><span class="o">-&gt;</span><span class="n">swapBuffers</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="n">drew</span><span class="p">,</span><span class="w"> </span><span class="n">windowDirty</span><span class="p">,</span><span class="w"> </span><span class="n">mCurrentFrameInfo</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">requireSwap</span><span class="p">);</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+即工作是由<code>mRenderPipeline</code>承包。它是由系统属性决定创建的，同时也是在<code>CanvasContext</code>构造时就创建了的。我们来看<code>SkiaOpenGLPipeline</code>的处理：</p>
+<p><div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">SkiaOpenGLPipeline::draw</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Frame</span><span class="o">&amp;</span><span class="w"> </span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">screenDirty</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dirty</span><span class="p">,</span>
+<span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">LightGeometry</span><span class="o">&amp;</span><span class="w"> </span><span class="n">lightGeometry</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">LayerUpdateQueue</span><span class="o">*</span><span class="w"> </span><span class="n">layerUpdateQueue</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Rect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">contentDrawBounds</span><span class="p">,</span>
+<span class="w">                              </span><span class="kt">bool</span><span class="w"> </span><span class="n">opaque</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">LightInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">lightInfo</span><span class="p">,</span>
+<span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">sp</span><span class="o">&lt;</span><span class="n">RenderNode</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">renderNodes</span><span class="p">,</span>
+<span class="w">                              </span><span class="n">FrameInfoVisualizer</span><span class="o">*</span><span class="w"> </span><span class="n">profiler</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="n">SkASSERT</span><span class="p">(</span><span class="n">mRenderThread</span><span class="p">.</span><span class="n">getGrContext</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">sk_sp</span><span class="o">&lt;</span><span class="n">SkSurface</span><span class="o">&gt;</span><span class="w"> </span><span class="n">surface</span><span class="p">(</span><span class="n">SkSurface</span><span class="o">::</span><span class="n">MakeFromBackendRenderTarget</span><span class="p">(</span>
+<span class="w">            </span><span class="n">mRenderThread</span><span class="p">.</span><span class="n">getGrContext</span><span class="p">(),</span><span class="w"> </span><span class="n">backendRT</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">getSurfaceOrigin</span><span class="p">(),</span><span class="w"> </span><span class="n">colorType</span><span class="p">,</span>
+<span class="w">            </span><span class="n">mSurfaceColorSpace</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">props</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">renderFrame</span><span class="p">(</span><span class="o">*</span><span class="n">layerUpdateQueue</span><span class="p">,</span><span class="w"> </span><span class="n">dirty</span><span class="p">,</span><span class="w"> </span><span class="n">renderNodes</span><span class="p">,</span><span class="w"> </span><span class="n">opaque</span><span class="p">,</span><span class="w"> </span><span class="n">contentDrawBounds</span><span class="p">,</span><span class="w"> </span><span class="n">surface</span><span class="p">,</span>
+<span class="w">                </span><span class="n">SkMatrix</span><span class="o">::</span><span class="n">I</span><span class="p">());</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ATRACE_NAME</span><span class="p">(</span><span class="s">&quot;flush commands&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">surface</span><span class="o">-&gt;</span><span class="n">flushAndSubmit</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+如果你对<code>skia</code>有所了解，这里就很好懂了，这里会先构造一个<code>SkSurface</code>，它是由<code>grContext</code>作为后端的。之后进入<code>renderFrame</code>：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">SkiaPipeline::renderFrame</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">LayerUpdateQueue</span><span class="o">&amp;</span><span class="w"> </span><span class="n">layers</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">clip</span><span class="p">,</span>
+<span class="w">                               </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">sp</span><span class="o">&lt;</span><span class="n">RenderNode</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">nodes</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">opaque</span><span class="p">,</span>
+<span class="w">                               </span><span class="k">const</span><span class="w"> </span><span class="n">Rect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">contentDrawBounds</span><span class="p">,</span><span class="w"> </span><span class="n">sk_sp</span><span class="o">&lt;</span><span class="n">SkSurface</span><span class="o">&gt;</span><span class="w"> </span><span class="n">surface</span><span class="p">,</span>
+<span class="w">                               </span><span class="k">const</span><span class="w"> </span><span class="n">SkMatrix</span><span class="o">&amp;</span><span class="w"> </span><span class="n">preTransform</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Initialize the canvas for the current frame, that might be a recording canvas if SKP</span>
+<span class="w">    </span><span class="c1">// capture is enabled.</span>
+<span class="w">    </span><span class="n">SkCanvas</span><span class="o">*</span><span class="w"> </span><span class="n">canvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tryCapture</span><span class="p">(</span><span class="n">surface</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">layers</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// draw all layers up front</span>
+<span class="w">    </span><span class="n">renderLayersImpl</span><span class="p">(</span><span class="n">layers</span><span class="p">,</span><span class="w"> </span><span class="n">opaque</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">renderFrameImpl</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="w"> </span><span class="n">nodes</span><span class="p">,</span><span class="w"> </span><span class="n">opaque</span><span class="p">,</span><span class="w"> </span><span class="n">contentDrawBounds</span><span class="p">,</span><span class="w"> </span><span class="n">canvas</span><span class="p">,</span><span class="w"> </span><span class="n">preTransform</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">endCapture</span><span class="p">(</span><span class="n">surface</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+
+<span class="w">    </span><span class="n">Properties</span><span class="o">::</span><span class="n">skpCaptureEnabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">previousSkpEnabled</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>这里主要是要对<code>RenderNode nodes</code>回放。而<code>RenderNodes</code>是由CanvasAPI根据绘制指令来操作的。<code>swap</code>简单看一下：
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">SkiaOpenGLPipeline::swapBuffers</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Frame</span><span class="o">&amp;</span><span class="w"> </span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">drew</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">screenDirty</span><span class="p">,</span>
+<span class="w">                                     </span><span class="n">FrameInfo</span><span class="o">*</span><span class="w"> </span><span class="n">currentFrameInfo</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">*</span><span class="w"> </span><span class="n">requireSwap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">requireSwap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">drew</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">mEglManager</span><span class="p">.</span><span class="n">damageRequiresSwap</span><span class="p">();</span>
+<span class="p">...</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="n">requireSwap</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">EglManager::swapBuffers</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Frame</span><span class="o">&amp;</span><span class="w"> </span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">screenDirty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">eglSwapBuffersWithDamageKHR</span><span class="p">(</span><span class="n">mEglDisplay</span><span class="p">,</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">mSurface</span><span class="p">,</span><span class="w"> </span><span class="n">rects</span><span class="p">,</span><span class="w"> </span><span class="n">screenDirty</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">EGLint</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eglGetError</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CC_LIKELY</span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EGL_SUCCESS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+其实和我们调用<code>eglSwapBuffer(eglDisplay, eglSurface)</code>已经类似了。最后看下CanvasAPI吧：
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nd">@NonNull</span><span class="w"> </span><span class="n">RecordingCanvas</span><span class="w"> </span><span class="nf">beginRecording</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="n">mCurrentRecordingCanvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RecordingCanvas</span><span class="p">.</span><span class="na">obtain</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">mCurrentRecordingCanvas</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="n">RecordingCanvas</span><span class="w"> </span><span class="nf">obtain</span><span class="p">(</span><span class="nd">@NonNull</span><span class="w"> </span><span class="n">RenderNode</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">            </span><span class="n">canvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RecordingCanvas</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">canvas</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">RecordingCanvas</span><span class="p">(</span><span class="nd">@NonNull</span><span class="w"> </span><span class="n">RenderNode</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">nCreateDisplayListCanvas</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="na">mNativeRenderNode</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">));</span>
+<span class="w">        </span><span class="n">mDensity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// disable bitmap density scaling</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="kd">static</span><span class="w"> </span><span class="n">jlong</span><span class="w"> </span><span class="nf">android_view_DisplayListCanvas_createDisplayListCanvas</span><span class="p">(</span><span class="n">CRITICAL_JNI_PARAMS_COMMA</span><span class="w"> </span><span class="n">jlong</span><span class="w"> </span><span class="n">renderNodePtr</span><span class="p">,</span>
+<span class="w">        </span><span class="n">jint</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">jint</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">RenderNode</span><span class="o">*</span><span class="w"> </span><span class="n">renderNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="n">RenderNode</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">renderNodePtr</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="n">jlong</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Canvas</span><span class="p">::</span><span class="n">create_recording_canvas</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">renderNode</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">Canvas</span><span class="o">*</span><span class="w"> </span><span class="n">Canvas</span><span class="p">::</span><span class="n">create_recording_canvas</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">uirenderer</span><span class="p">::</span><span class="n">RenderNode</span><span class="o">*</span><span class="w"> </span><span class="n">renderNode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">uirenderer</span><span class="p">::</span><span class="n">skiapipeline</span><span class="p">::</span><span class="n">SkiaRecordingCanvas</span><span class="p">(</span><span class="n">renderNode</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="w">    </span><span class="n">explicit</span><span class="w"> </span><span class="nf">SkiaRecordingCanvas</span><span class="p">(</span><span class="n">uirenderer</span><span class="p">::</span><span class="n">RenderNode</span><span class="o">*</span><span class="w"> </span><span class="n">renderNode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">initDisplayList</span><span class="p">(</span><span class="n">renderNode</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">SkiaRecordingCanvas</span><span class="p">::</span><span class="n">initDisplayList</span><span class="p">(</span><span class="n">uirenderer</span><span class="p">::</span><span class="n">RenderNode</span><span class="o">*</span><span class="w"> </span><span class="n">renderNode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span>
+<span class="w">                                          </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mCurrentBarrier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">SkASSERT</span><span class="p">(</span><span class="n">mDisplayList</span><span class="p">.</span><span class="na">get</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nullptr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">renderNode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mDisplayList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">renderNode</span><span class="o">-&gt;</span><span class="n">detachAvailableList</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">mDisplayList</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mDisplayList</span><span class="p">.</span><span class="na">reset</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">SkiaDisplayList</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">mDisplayList</span><span class="o">-&gt;</span><span class="n">attachRecorder</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mRecorder</span><span class="p">,</span><span class="w"> </span><span class="n">SkIRect</span><span class="p">::</span><span class="n">MakeWH</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">));</span>
+<span class="w">    </span><span class="n">SkiaCanvas</span><span class="p">::</span><span class="n">reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mRecorder</span><span class="p">);</span>
+<span class="w">    </span><span class="n">mDisplayList</span><span class="o">-&gt;</span><span class="n">setHasHolePunches</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+也就是，<code>RenderNode#beginRecording</code>最后得到的是Java侧<code>RecordingCanvas</code>实例，它持有一个<code>SkiaRecordingCanvas</code>native的实例。<code>SkiaRecordingCanvas</code>则有如下继承：<code>SkiaCanvas:Canvas</code>。
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">SkiaCanvas</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SkBitmap</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bitmap</span><span class="p">);</span>
+<span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">SkiaCanvas</span><span class="p">(</span><span class="n">SkCanvas</span><span class="o">*</span><span class="w"> </span><span class="n">canvas</span><span class="p">);</span>
+</code></pre></div>
+<code>SkiaCanvas</code>会持有一个<code>SkCanvas</code>，对于<code>SkiaRecordingCanvas</code>，其持有的<code>SkCanvas</code>是<code>RecordingCanvas:SkCanvasVirtualEnforcer&lt;SkNoDrawCanvas&gt;</code>，它实际上继承于<code>SkNoDrawCanvas</code>。</p>
+<p>来看一个<code>drawRect</code>调用
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drawRect</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">top</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">right</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">bottom</span><span class="p">,</span>
+<span class="w">            </span><span class="nd">@NonNull</span><span class="w"> </span><span class="n">Paint</span><span class="w"> </span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">nDrawRect</span><span class="p">(</span><span class="n">mNativeCanvasWrapper</span><span class="p">,</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">top</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">,</span><span class="w"> </span><span class="n">bottom</span><span class="p">,</span><span class="w"> </span><span class="n">paint</span><span class="p">.</span><span class="na">getNativeInstance</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+是如下方式被注册jni的：
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">JNINativeMethod</span><span class="w"> </span><span class="n">gDrawMethods</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawColor&quot;</span><span class="p">,</span><span class="s">&quot;(JII)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawColor</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawColor&quot;</span><span class="p">,</span><span class="s">&quot;(JJJI)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawColorLong</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawPaint&quot;</span><span class="p">,</span><span class="s">&quot;(JJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawPaint</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawPoint&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawPoint</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawPoints&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(J[FIIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawPoints</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawLine&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JFFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawLine</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawLines&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(J[FIIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawLines</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawRect&quot;</span><span class="p">,</span><span class="s">&quot;(JFFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawRect</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawRegion&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JJJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawRegion</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawRoundRect&quot;</span><span class="p">,</span><span class="s">&quot;(JFFFFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawRoundRect</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawDoubleRoundRect&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JFFFFFFFFFFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawDoubleRoundRectXY</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawDoubleRoundRect&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JFFFF[FFFFF[FJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawDoubleRoundRectRadii</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawCircle&quot;</span><span class="p">,</span><span class="s">&quot;(JFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawCircle</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawOval&quot;</span><span class="p">,</span><span class="s">&quot;(JFFFFJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawOval</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawArc&quot;</span><span class="p">,</span><span class="s">&quot;(JFFFFFFZJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawArc</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawPath&quot;</span><span class="p">,</span><span class="s">&quot;(JJJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawPath</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawVertices&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JII[FI[FI[II[SIIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawVertices</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawNinePatch&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JJJFFFFJII)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawNinePatch</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawBitmapMatrix&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JJJJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawBitmapMatrix</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawBitmapMesh&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JJII[FI[IIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawBitmapMesh</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawBitmap&quot;</span><span class="p">,</span><span class="s">&quot;(JJFFJIII)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawBitmap</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawBitmap&quot;</span><span class="p">,</span><span class="s">&quot;(JJFFFFFFFFJII)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawBitmapRect</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawBitmap&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(J[IIIFFIIZJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawBitmapArray</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawGlyphs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(J[I[FIIIJJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawGlyphs</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawText&quot;</span><span class="p">,</span><span class="s">&quot;(J[CIIFFIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextChars</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawText&quot;</span><span class="p">,</span><span class="s">&quot;(JLjava/lang/String;IIFFIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextString</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawTextRun&quot;</span><span class="p">,</span><span class="s">&quot;(J[CIIIIFFZJJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextRunChars</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawTextRun&quot;</span><span class="p">,</span><span class="s">&quot;(JLjava/lang/String;IIIIFFZJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextRunString</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawTextOnPath&quot;</span><span class="p">,</span><span class="s">&quot;(J[CIIJFFIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextOnPathChars</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nDrawTextOnPath&quot;</span><span class="p">,</span><span class="s">&quot;(JLjava/lang/String;JFFIJ)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">drawTextOnPathString</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nPunchHole&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(JFFFFFF)V&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">CanvasJNI</span><span class="o">::</span><span class="n">punchHole</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">register_android_graphics_Canvas</span><span class="p">(</span><span class="n">JNIEnv</span><span class="o">*</span><span class="w"> </span><span class="n">env</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">RegisterMethodsOrDie</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;android/graphics/Canvas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">gMethods</span><span class="p">,</span><span class="w"> </span><span class="n">NELEM</span><span class="p">(</span><span class="n">gMethods</span><span class="p">));</span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">RegisterMethodsOrDie</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;android/graphics/BaseCanvas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">gDrawMethods</span><span class="p">,</span><span class="w"> </span><span class="n">NELEM</span><span class="p">(</span><span class="n">gDrawMethods</span><span class="p">));</span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">RegisterMethodsOrDie</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;android/graphics/BaseRecordingCanvas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">gDrawMethods</span><span class="p">,</span><span class="w"> </span><span class="n">NELEM</span><span class="p">(</span><span class="n">gDrawMethods</span><span class="p">));</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+实现：
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">drawRect</span><span class="p">(</span><span class="n">JNIEnv</span><span class="o">*</span><span class="w"> </span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">jobject</span><span class="p">,</span><span class="w"> </span><span class="n">jlong</span><span class="w"> </span><span class="n">canvasHandle</span><span class="p">,</span><span class="w"> </span><span class="n">jfloat</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">jfloat</span><span class="w"> </span><span class="n">top</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">jfloat</span><span class="w"> </span><span class="n">right</span><span class="p">,</span><span class="w"> </span><span class="n">jfloat</span><span class="w"> </span><span class="n">bottom</span><span class="p">,</span><span class="w"> </span><span class="n">jlong</span><span class="w"> </span><span class="n">paintHandle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Paint</span><span class="o">*</span><span class="w"> </span><span class="n">paint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">Paint</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">paintHandle</span><span class="p">);</span>
+<span class="w">    </span><span class="n">get_canvas</span><span class="p">(</span><span class="n">canvasHandle</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">drawRect</span><span class="p">(</span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">top</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">,</span><span class="w"> </span><span class="n">bottom</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">paint</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+即调用了<code>SkiaRecordingCanvas</code>的<code>drawRect</code>，而又调用了<code>SkiaCanvas</code>持有的<code>SkCanvas</code>的<code>drawRect</code>即native侧的<code>RecordingCanvas:SkCanvasVirtualEnforcer&lt;SkNoDrawCanvas&gt;</code>的<code>drawRect</code>，而<code>SkNoDrawCanvas:SkCanvas</code>：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">SkCanvas::drawRect</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkPaint</span><span class="o">&amp;</span><span class="w"> </span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TRACE_EVENT0</span><span class="p">(</span><span class="s">&quot;skia&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TRACE_FUNC</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// To avoid redundant logic in our culling code and various backends, we always sort rects</span>
+<span class="w">    </span><span class="c1">// before passing them along.</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">onDrawRect</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">makeSorted</span><span class="p">(),</span><span class="w"> </span><span class="n">paint</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+但native侧的<code>RecordingCanvas</code>复写了<code>onDrawRect</code>：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">RecordingCanvas::onDrawRect</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkPaint</span><span class="o">&amp;</span><span class="w"> </span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fDL</span><span class="o">-&gt;</span><span class="n">drawRect</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="n">paint</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">DisplayListData::drawRect</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkPaint</span><span class="o">&amp;</span><span class="w"> </span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">push</span><span class="o">&lt;</span><span class="n">DrawRect</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="n">paint</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<code>DisplayListData::push</code>是模板方法，而<code>DrawRect</code>类则是<code>drawRect</code>操作对应的记录数据结构：
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">DrawRect</span><span class="w"> </span><span class="k">final</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Op</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">kType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Type</span><span class="o">::</span><span class="n">DrawRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DrawRect</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SkRect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkPaint</span><span class="o">&amp;</span><span class="w"> </span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">rect</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span><span class="w"> </span><span class="n">paint</span><span class="p">(</span><span class="n">paint</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">SkRect</span><span class="w"> </span><span class="n">rect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">SkPaint</span><span class="w"> </span><span class="n">paint</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="n">SkCanvas</span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SkMatrix</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">c</span><span class="o">-&gt;</span><span class="n">drawRect</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span><span class="w"> </span><span class="n">paint</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></p>
+<p>最后<code>RenderNode</code>是用于硬件加速时构造View结构的节点。主要包含<code>DisplayList</code>和一组属性（描述位置、缩放、透明等）.每个<code>View</code>在构造时都也会构造<code>RenderNode</code>。</p>
+<p>总的来看，CanvasAPI整体还是和Skia绑定比较紧。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

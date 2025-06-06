@@ -1,0 +1,5 @@
+/* 覆盖MkDocs主题对特定容器内图片高度的限制 */
+.index-page-images img {
+    height: 100px;
+    width: 100px;
+}

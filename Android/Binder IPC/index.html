@@ -1,0 +1,4029 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Activity/">
+      
+      
+        <link rel="next" href="../Dex%20File/">
+      
+      
+      <link rel="icon" href="../../pics/z.jpeg">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Binder IPC - Zhang Ruize's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zhang Ruize&#39;s Blog" class="md-header__button md-logo" aria-label="Zhang Ruize's Blog" data-md-component="logo">
+      
+  <img src="../../pics/z.jpeg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zhang Ruize's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Binder IPC
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zhang Ruize&#39;s Blog" class="md-nav__button md-logo" aria-label="Zhang Ruize's Blog" data-md-component="logo">
+      
+  <img src="../../pics/z.jpeg" alt="logo">
+
+    </a>
+    Zhang Ruize's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于我
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../photos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Photos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../posts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Posts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Android
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Activity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Activity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Binder IPC
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Binder IPC
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      背景概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      设计概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      预备知识
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="预备知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alloc-malloc-calloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      alloc, malloc, calloc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kzalloc-kmalloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      kzalloc, kmalloc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      mmap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current" class="md-nav__link">
+    <span class="md-ellipsis">
+      current
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pid-tid-tgid" class="md-nav__link">
+    <span class="md-ellipsis">
+      pid tid tgid
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      通信流程描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="通信流程描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ibinder-bbinder-bpbinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBinder BBinder BpBinder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProcessState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipcthreadstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPCThreadState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binder 驱动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      唤醒方式
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      标准场景描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标准场景描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#servicemanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      ServiceManager启动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      服务注册
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用进程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      三次复制和一次复制
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      拓展阅读
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Dex%20File/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dex File
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Glide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Jetpack%20%E7%8E%B0%E4%BB%A3%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jetpack 现代安卓开发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LeakCanary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LeakCanary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Looper%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Looper Handler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MMKV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MMKV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MultiDex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MultiDex
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OkHttp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OkHttp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Retrofit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retrofit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shared%20Preference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Preferences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TextureView%2C%20SurfaceView/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TextureView, SurfaceView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UUID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UUID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ViewModel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewModel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    事件分发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8C%85%E7%AD%BE%E5%90%8D%E3%80%81%E9%AA%8C%E8%AF%81%E3%80%81%E5%8A%A0%E5%9B%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    包签名、验证、加固
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    性能优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%8F%92%E4%BB%B6%E5%8C%96%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    插件化方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9B%9D%E5%85%89%E5%9F%8B%E7%82%B9%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    曝光埋点方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渲染机制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%B8%B2%E6%9F%93%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    渲染架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%83%AD%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    热修复方案
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    构建优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自动化测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Bito
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Bito
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Bito/Bito%20VSCode%20Extension/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bito VSCode Extension
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Bito/Bito-TSX/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bito TSX
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            CI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CI/Github%26Gitlab-CI%26CD%E7%90%86%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Github&Gitlab CI&CD理解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CXX
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            CXX
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CXX/makefile%20cmake%20gn%20ninja/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Makefile cmake gn ninja
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gradle
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Gradle
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Gradle/gradle%20plugin/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gradle plugin
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Java
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/JVM%20TI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM TI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM内存模型
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Jar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Java%E5%B9%B6%E5%8F%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java并发
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Jni/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jni
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/List%20Queue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    List Queue
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/Map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Map
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/RxJava/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RxJava
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/SPI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SPI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    四种引用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    构造方法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Java/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    类加载
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Javascript
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Javascript
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/Javascript%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Javascript开发环境部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/JsApi%20proto/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JsApi Proto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Javascript/js%20this%2C%20prototype/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Js this, prototype
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kotlin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Kotlin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20Flow%20Channel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin Flow Channel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20in%20out%20%E5%8D%8F%E5%8F%98%E3%80%81%E9%80%86%E5%8F%98/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin in out 协变、逆变
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Kotlin/Kotlin%20%E5%8D%8F%E7%A8%8B%20%E6%8C%82%E8%B5%B7%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kotlin 协程 挂起函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Lx
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Lx
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Lx/%E6%97%A0%E5%A4%96%E9%83%A8%E4%BE%9D%E8%B5%96%E5%88%9B%E9%80%A0%E4%B8%80%E4%B8%AA%E8%AF%AD%E8%A8%80%E8%B7%91%E8%B5%B7%E6%9D%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    无外部依赖创造一个语言跑起来
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Rust
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            Rust
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Rust/rust/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rust
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    操作系统、Linux
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            操作系统、Linux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/Linux%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E3%80%81%E6%A0%87%E5%87%86%E5%BA%93/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux系统调用、标准库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/cpu-mcu-isc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cpu mcu isc
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E3%80%81Linux/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    多任务操作系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    算法
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            算法
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    二叉树
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    算法整理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    编码、序列化
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            编码、序列化
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/Json/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Json
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/ProtoBuffer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ProtoBuffer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/Unicode%20Utf8%20Base64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unicode Utf8 Base64
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数字签名
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BC%96%E7%A0%81%E3%80%81%E5%BA%8F%E5%88%97%E5%8C%96/%E8%A1%A5%E7%A0%81%E8%BF%90%E7%AE%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    补码运算
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机图形
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            计算机图形
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Linear%20gradient/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linear gradient
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/OpenGL%20shader%20language%20%28flower%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenGL shader language (flower)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/OpenGL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenGL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Path%20tracing%20%E8%B7%AF%E5%BE%84%E8%BF%BD%E8%B8%AA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Path tracing 路径追踪
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Perlin%20noise%28Flow%20field%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Perlin noise(Flow field)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/Skia/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skia
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/alpha%20composition/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alpha composition
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    计算机网络
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            计算机网络
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    计算机网络
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    设计模式
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            设计模式
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/MVC%20MVP%20MVVM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MVC MVP MVVM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    依赖注入
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9F%BA%E4%BA%8E%E8%B0%83%E7%94%A8%E3%80%81%E5%9F%BA%E4%BA%8E%E4%BA%8B%E4%BB%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    基于调用、基于事件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%BD%8D%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    服务定位器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    跨端技术
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            跨端技术
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_1" id="__nav_20_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Compose
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_1">
+            <span class="md-nav__icon md-icon"></span>
+            Compose
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/Compose/Compose%E7%90%86%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Compose理解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_2" id="__nav_20_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Electron
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_2">
+            <span class="md-nav__icon md-icon"></span>
+            Electron
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/electron/%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_3" id="__nav_20_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Flutter
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_3">
+            <span class="md-nav__icon md-icon"></span>
+            Flutter
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/flutter/%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_20_4" id="__nav_20_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    小程序
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_20_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20_4">
+            <span class="md-nav__icon md-icon"></span>
+            小程序
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%B7%A8%E7%AB%AF%E6%8A%80%E6%9C%AF/%E5%B0%8F%E7%A8%8B%E5%BA%8F/Sticker%20Board%E9%A1%B9%E7%9B%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sticker Board项目
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    其他
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            其他
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%85%B6%E4%BB%96/%E5%90%89%E4%BB%96%E6%8C%87%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    吉他指型推导
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      背景概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      设计概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      预备知识
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="预备知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alloc-malloc-calloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      alloc, malloc, calloc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kzalloc-kmalloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      kzalloc, kmalloc
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      mmap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current" class="md-nav__link">
+    <span class="md-ellipsis">
+      current
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pid-tid-tgid" class="md-nav__link">
+    <span class="md-ellipsis">
+      pid tid tgid
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      通信流程描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="通信流程描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ibinder-bbinder-bpbinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBinder BBinder BpBinder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProcessState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipcthreadstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPCThreadState
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binder 驱动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      唤醒方式
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      标准场景描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标准场景描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#servicemanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      ServiceManager启动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      服务注册
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用进程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      三次复制和一次复制
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      拓展阅读
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Binder IPC</h1>
+
+<h2 id="_1">背景概述</h2>
+<p>Binder是一种基于Linux系统的进程间通信方式。起源于OpenBinder，经过多次公司转手开发，binder驱动程序在2014年左右已经合入到linux内核。</p>
+<p>特点：</p>
+<ul>
+<li>快速、单次拷贝。基于每个进程(<code>ProcessState::self()-&gt;init-&gt;open_driver()</code>, <code>mmap</code>)打开Binder驱动文件并mmap了一部分内存，以用于接受transaction数据。在通信时Binder只需要将数据从发起进程的用户空间写入到目标进程的mmap虚拟内存地址即可（在安卓8之前是三次拷贝，额外的两次在Parcel的序列化、反序列化，详见下文）。</li>
+<li>面向对象。开发者友好。native或者java侧，都可以拿到服务接口的proxy（native靠模板和宏展开，java靠aidl生成），可以直接像调用本地对象的方法一样访问服务进程的功能。</li>
+<li>安全/可订阅（死亡信息）</li>
+</ul>
+<blockquote>
+<p>争议：由于linux缺乏对高速ipc的支持，出现了多种针对高速ipc的方式。而binder的争议主要在于，对同一个设备文件标识符，即<code>dev/binder</code>，在不同进程中的行为是不一样的。这个和大部分人的预期不符。
+在争执了一段时间后还是合入了Linux，并且也被劝告它并不好用，使用者需要自行负责。</p>
+</blockquote>
+<h2 id="_2">设计概述</h2>
+<p>每个进程都可以通过访问<code>dev/binder</code>标识符，来和binder驱动程序通信。而binder驱动程序提供了ipc的所需所有功能接口。</p>
+<p>情景化思考：</p>
+<p>思考这样一个问题，进程A，要和一个服务B通信，这个服务B既包括系统内置的系统服务，也包括用户应用提供的服务。而服务会动态变化，因此对于进程A来说，想要硬编码一个服务地址，并不可取，合理的设计应该是SPI，即ServiceProviderInterface，或者SL即ServiceLocator设计模式。于是应该有一个固定的服务地址，它所提供的核心服务便是查询其他服务的地址。</p>
+<p>而<code>ServiceManager</code>，对应的<code>handle:0</code>，就是这个固定地址的系统服务，所扮演的角色就是服务管理器。它自己需要从binder驱动的<code>ioctl</code>来设置自己是管理者。而其他的服务进程需要借助binder驱动的<code>ioctl</code>来和serviceManager通信，调用它的<code>addService</code>服务来注册自己的服务。而对于进程A，则是依靠binder驱动<code>ioctl</code>来从<code>serviceManager</code>中获取某服务，比如传入特定枚举，以获得该枚举对应服务的<code>IBinder</code>，再转为<code>Proxy</code>来调用目标服务的功能。调用目标服务的功能时，本质上和<code>serviceManager</code>获取服务时的通信也没区别。</p>
+<p><img alt="" src="https://pathpartnerms.wpengine.com/wp-content/uploads/2020/08/Fig2.png" /></p>
+<h2 id="_3">预备知识</h2>
+<p>在正式开始前需要先明确一些基本的知识。</p>
+<h4 id="alloc-malloc-calloc">alloc, malloc, calloc</h4>
+<p>alloc在栈上分配内存。
+malloc是只分配内存，但需要Memset后才能访问。
+而calloc是分配内存后，可以直接访问（都填0）。后两者是在进程堆上分配。</p>
+<h4 id="kzalloc-kmalloc">kzalloc, kmalloc</h4>
+<p>k前缀表示是从Kernel调用，用以区分从用户空间的调用。都是在内存堆中分配。前者会清零，后者不会。</p>
+<h4 id="mmap">mmap</h4>
+<p><img alt="" src="../../pics/mmap.png" /></p>
+<p><img alt="" src="../../pics/mmap2.png" /></p>
+<h4 id="current">current</h4>
+<p>即当前的进程task_struct</p>
+<h4 id="pid-tid-tgid">pid tid tgid</h4>
+<p>pid=processId, tid=threadId。</p>
+<p>在linux，线程在内核所维护的任务数据结构和进程一致，都是task_struct，所以tid就是线程对应task_struct里面的pid。而pid实际上是进程对应task_struct里面的tgid。也就是线程组id。对进程中的主线程来说，tid = pid = tgid。</p>
+<p>因此会看到在binder driver里，binder_ioctl中对binder_thread的获取即当前线程的获取方式是在<code>flip-&gt;privateData(BinderProc)</code>对红黑树数据结构里的节点记录根据<code>current-&gt;pid</code>来比对查询。如果查询不到，则创建新的binder_thread节点插入其中。</p>
+<h2 id="_4">通信流程描述</h2>
+<h4 id="ibinder-bbinder-bpbinder">IBinder BBinder BpBinder</h4>
+<p><code>IBinder</code>中包含<code>transact</code>等方法，有两个关键子类：</p>
+<ul>
+<li><code>BBinder</code>（理解为Service的实现端），也就是真正实现了服务接口，一般在实现类中，等待Binder框架调用其onTransact-&gt;并解包数据，进而分发到接口方法上。</li>
+<li><code>BpBinder</code>（理解为Client端），也就是服务接口的Proxy。客户端调用Proxy，Proxy负责封装数据、转为Parcel，进行后续的transact。</li>
+</ul>
+<p>Parcel在<code>writeBinder</code>时，如果是写入<code>BBinder</code>，也就是服务实现端，会记录<code>binder_object_type: binder_type_binder</code>。若是代理端，则是<code>binder_type_handle</code>.这两种类型，会在binder驱动的<code>binder_transaction</code>方法中对应不同的行为。</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1">//已精简</span>
+<span class="n">status_t</span><span class="w"> </span><span class="nf">BpBinder::transact</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Parcel</span><span class="o">&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">Parcel</span><span class="o">*</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPCThreadState</span><span class="o">::</span><span class="n">self</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">transact</span><span class="p">(</span><span class="n">binderHandle</span><span class="p">(),</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+即交由<code>IPCThreadState</code>，值得注意的是这里的<code>binderHandle()</code>，因为它将用于在此进程对应的Binder驱动中<code>binder_proc</code>结构里检索目标进程的<code>binder_ref_node</code>。换句话说，BpBinder的<code>transact</code>方法虽然没暴露<code>handle</code>参数，但它的内部成员<code>mHandle</code>在BpBinder构造时便得到了此代理所对应的在该进程中的<code>handle</code>值。</p>
+<p>更进一步来讲，BpBinder的创建主要分两种：</p>
+<ul>
+<li>handle为0表示<code>ServiceManager</code>的BpBinder。</li>
+<li>通过<code>ServiceManager</code>的功能接口得到的返回结果里包含了IBinder，此时会在解包的过程中经由<code>Parcel.readStrongBinder</code> ..-&gt; <code>Parcel.unflatternBnder</code>：</li>
+</ul>
+<p><div class="highlight"><pre><span></span><code><span class="n">status_t</span><span class="w"> </span><span class="nf">Parcel::unflattenBinder</span><span class="p">(</span><span class="n">sp</span><span class="o">&lt;</span><span class="n">IBinder</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">flat</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_BINDER</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sp</span><span class="o">&lt;</span><span class="n">IBinder</span><span class="o">&gt;</span><span class="w"> </span><span class="n">binder</span><span class="w"> </span><span class="o">=</span>
+<span class="w">                        </span><span class="n">sp</span><span class="o">&lt;</span><span class="n">IBinder</span><span class="o">&gt;::</span><span class="n">fromExisting</span><span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">IBinder</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">flat</span><span class="o">-&gt;</span><span class="n">cookie</span><span class="p">));</span>
+<span class="w">               </span><span class="c1">// 这里代表是本地binder</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">finishUnflattenBinder</span><span class="p">(</span><span class="n">binder</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_HANDLE</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sp</span><span class="o">&lt;</span><span class="n">IBinder</span><span class="o">&gt;</span><span class="w"> </span><span class="n">binder</span><span class="w"> </span><span class="o">=</span>
+<span class="w">                    </span><span class="n">ProcessState</span><span class="o">::</span><span class="n">self</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getStrongProxyForHandle</span><span class="p">(</span><span class="n">flat</span><span class="o">-&gt;</span><span class="n">handle</span><span class="p">);</span>
+<span class="w">               </span><span class="c1">// 此路径最终会调用到 BpBinder::PrivateAccessor::create(handle);即创建了此handle的BpBinder</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">finishUnflattenBinder</span><span class="p">(</span><span class="n">binder</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+关于IBinder的type有如下说明：</p>
+<p><img alt="" src="../../pics/IBinderTYpe.png" /></p>
+<h4 id="processstate">ProcessState</h4>
+<p>进程单例。构造方法如下：
+<div class="highlight"><pre><span></span><code><span class="c1">//已精简</span>
+<span class="n">ProcessState</span><span class="o">::</span><span class="n">ProcessState</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">driver</span><span class="p">)</span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">mDriverName</span><span class="p">(</span><span class="n">String8</span><span class="p">(</span><span class="n">driver</span><span class="p">)),</span>
+<span class="w">        </span><span class="n">mDriverFD</span><span class="p">(</span><span class="mi">-1</span><span class="p">),</span>
+<span class="w">        </span><span class="n">mMaxThreads</span><span class="p">(</span><span class="n">DEFAULT_MAX_BINDER_THREADS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">base</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">opened</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open_driver</span><span class="p">(</span><span class="n">driver</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// mmap the binder, providing a chunk of virtual address space to receive transactions.</span>
+<span class="w">        </span><span class="n">mVMStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">BINDER_VM_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_PRIVATE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MAP_NORESERVE</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">opened</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">mDriverFD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opened</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">base</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">open_driver</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">driver</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDWR</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">O_CLOEXEC</span><span class="p">);</span>
+<span class="w">    </span><span class="n">status_t</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">BINDER_VERSION</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vers</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">maxThreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_MAX_BINDER_THREADS</span><span class="p">;</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">BINDER_SET_MAX_THREADS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">maxThreads</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">fd</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+即打开Binder驱动，并以打开的fd来映射一片虚拟内存、只读、私有。这里也简单看下Binder驱动中的处理：
+<div class="highlight"><pre><span></span><code><span class="c1">//已精简</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">binder_open</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">inode</span><span class="w"> </span><span class="o">*</span><span class="n">nodp</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">filp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kzalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">proc</span><span class="p">),</span><span class="w"> </span><span class="n">GFP_KERNEL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">proc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">);</span>
+<span class="w">    </span><span class="n">init_waitqueue_head</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">freeze_wait</span><span class="p">);</span>
+<span class="w">    </span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">binder_dev</span><span class="o">-&gt;</span><span class="n">context</span><span class="p">;</span>
+<span class="w">    </span><span class="n">binder_alloc_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">binder_stats_created</span><span class="p">(</span><span class="n">BINDER_STAT_PROC</span><span class="p">);</span>
+<span class="w">    </span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">group_leader</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">;</span>
+<span class="w">    </span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">delivered_death</span><span class="p">);</span>
+<span class="w">    </span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">waiting_threads</span><span class="p">);</span>
+<span class="w">    </span><span class="n">filp</span><span class="o">-&gt;</span><span class="n">private_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">proc</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">binder_mmap</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">filp</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">vm_area_struct</span><span class="w"> </span><span class="o">*</span><span class="n">vma</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filp</span><span class="o">-&gt;</span><span class="n">private_data</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">binder_alloc_mmap_handler</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span><span class="w"> </span><span class="n">vma</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/**</span>
+<span class="cm"> * binder_alloc_mmap_handler() - map virtual address space for proc</span>
+<span class="cm"> * @alloc:  alloc structure for this proc</span>
+<span class="cm"> * @vma:    vma passed to mmap()</span>
+<span class="cm"> *</span>
+<span class="cm"> * Called by binder_mmap() to initialize the space specified in</span>
+<span class="cm"> * vma for allocating binder buffers</span>
+<span class="cm"> *</span>
+<span class="cm"> * Return:</span>
+<span class="cm"> *      0 = success</span>
+<span class="cm"> *      -EBUSY = address space already mapped</span>
+<span class="cm"> *      -ENOMEM = failed to map memory to given address space</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">binder_alloc_mmap_handler</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_alloc</span><span class="w"> </span><span class="o">*</span><span class="n">alloc</span><span class="p">,</span>
+<span class="w">                  </span><span class="k">struct</span><span class="w"> </span><span class="nc">vm_area_struct</span><span class="w"> </span><span class="o">*</span><span class="n">vma</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">vma</span><span class="o">-&gt;</span><span class="n">vm_start</span><span class="p">;</span>
+<span class="w">    </span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">pages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kcalloc</span><span class="p">(</span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">buffer_size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">PAGE_SIZE</span><span class="p">,</span>
+<span class="w">                   </span><span class="k">sizeof</span><span class="p">(</span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">pages</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+<span class="w">                   </span><span class="n">GFP_KERNEL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">user_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">list_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">entry</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">buffers</span><span class="p">);</span>
+<span class="w">    </span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">free</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">binder_insert_free_buffer</span><span class="p">(</span><span class="n">alloc</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">    </span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">free_async_space</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">buffer_size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">binder_alloc_set_vma</span><span class="p">(</span><span class="n">alloc</span><span class="p">,</span><span class="w"> </span><span class="n">vma</span><span class="p">);</span>
+<span class="w">    </span><span class="n">mmgrab</span><span class="p">(</span><span class="n">alloc</span><span class="o">-&gt;</span><span class="n">vma_vm_mm</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+当实现驱动程序时，open方法签名是<code>int (*open)(struct inode *inode, struct file *filp);</code>。其中，filp是file pointer即文件指针的含义。在驱动程序的open方法中，一般会分配并填充要放进 <code>filp-&gt;private_data</code> 的任何数据结构。Binder驱动也不例外，它的<code>flip-&gt;private_data</code>是<code>binder_proc</code>结构。</p>
+<p>之后在mmap的处理中，由Binder 驱动申请了一块内存并登记在<code>binder_proc</code>结构体中。</p>
+<h4 id="ipcthreadstate">IPCThreadState</h4>
+<p>具体的IPC线程状态，线程内单例，负责IPC事务，构造方法如下：
+<div class="highlight"><pre><span></span><code><span class="c1">// 已精简</span>
+<span class="n">IPCThreadState</span><span class="o">::</span><span class="n">IPCThreadState</span><span class="p">()</span>
+<span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">mProcess</span><span class="p">(</span><span class="n">ProcessState</span><span class="o">::</span><span class="n">self</span><span class="p">()){</span>
+<span class="w">    </span><span class="n">pthread_setspecific</span><span class="p">(</span><span class="n">gTLS</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="n">mIn</span><span class="p">.</span><span class="n">setDataCapacity</span><span class="p">(</span><span class="mi">256</span><span class="p">);</span>
+<span class="w">    </span><span class="n">mOut</span><span class="p">.</span><span class="n">setDataCapacity</span><span class="p">(</span><span class="mi">256</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+它的transact方法代码精简如下：
+<div class="highlight"><pre><span></span><code><span class="n">status_t</span><span class="w"> </span><span class="nf">IPCThreadState::transact</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">handle</span><span class="p">,</span>
+<span class="w">                                  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Parcel</span><span class="o">&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">                                  </span><span class="n">Parcel</span><span class="o">*</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">writeTransactionData</span><span class="p">(</span><span class="n">BC_TRANSACTION</span><span class="p">,</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reply</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waitForResponse</span><span class="p">(</span><span class="n">reply</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Parcel</span><span class="w"> </span><span class="n">fakeReply</span><span class="p">;</span>
+<span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waitForResponse</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fakeReply</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waitForResponse</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+即写入事务数据，等待响应。若需要回复，即需要服务端的服务返回数据，则传入有效的reply指针。<code>writeTransactionData</code>会把<code>Parcel</code>数据进一步包装为<code>binder_transaction_data</code>数据结构。这里面有cmd是<code>BC_TRANSACTION</code>，code是对服务端方法的编号。cmd的取值分为<code>BC_</code>前缀和<code>BR_</code>前缀，由<code>Binder</code>驱动发起的是<code>BR_</code>前缀，由进程发起的是<code>BC_</code>前缀。</p>
+<p><img alt="" src="https://pathpartnerms.wpengine.com/wp-content/uploads/2020/08/Fig3.png" />
+<div class="highlight"><pre><span></span><code><span class="c1">// 已精简</span>
+<span class="n">status_t</span><span class="w"> </span><span class="nf">IPCThreadState::waitForResponse</span><span class="p">(</span><span class="n">Parcel</span><span class="w"> </span><span class="o">*</span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="n">status_t</span><span class="w"> </span><span class="o">*</span><span class="n">acquireResult</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">err</span><span class="o">=</span><span class="n">talkWithDriver</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NO_ERROR</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">mIn</span><span class="p">.</span><span class="n">readInt32</span><span class="p">();</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BR_TRANSACTION_COMPLETE</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">reply</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">acquireResult</span><span class="p">)</span><span class="w"> </span><span class="k">goto</span><span class="w"> </span><span class="n">finish</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BR_REPLY</span><span class="p">:</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">binder_transaction_data</span><span class="w"> </span><span class="n">tr</span><span class="p">;</span>
+<span class="w">                </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mIn</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tr</span><span class="p">));</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reply</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">tr</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_STATUS_CODE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">reply</span><span class="o">-&gt;</span><span class="n">ipcSetDataReference</span><span class="p">(</span>
+<span class="w">                            </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">ptr</span><span class="p">.</span><span class="n">buffer</span><span class="p">),</span>
+<span class="w">                            </span><span class="n">tr</span><span class="p">.</span><span class="n">data_size</span><span class="p">,</span>
+<span class="w">                            </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">binder_size_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">ptr</span><span class="p">.</span><span class="n">offsets</span><span class="p">),</span>
+<span class="w">                            </span><span class="n">tr</span><span class="p">.</span><span class="n">offsets_size</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">binder_size_t</span><span class="p">),</span>
+<span class="w">                            </span><span class="n">freeBuffer</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">status_t</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">ptr</span><span class="p">.</span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executeCommand</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">NO_ERROR</span><span class="p">)</span><span class="w"> </span><span class="k">goto</span><span class="w"> </span><span class="n">finish</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 大幅精简</span>
+<span class="n">status_t</span><span class="w"> </span><span class="nf">IPCThreadState::talkWithDriver</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">doReceive</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">binder_write_read</span><span class="w"> </span><span class="n">bwr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ioctl</span><span class="p">(</span><span class="n">mProcess</span><span class="o">-&gt;</span><span class="n">mDriverFD</span><span class="p">,</span><span class="w"> </span><span class="n">BINDER_WRITE_READ</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bwr</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NO_ERROR</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">-</span><span class="n">EINTR</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<code>waitForResponse</code>的工作主要是准备<code>binder_write_read</code>数据，通过ioctl提交此数据。等待返回结果。</p>
+<h4 id="binder">Binder 驱动</h4>
+<p><div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">binder_ioctl</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">filp</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filp</span><span class="o">-&gt;</span><span class="n">private_data</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">;</span>
+<span class="w">   </span><span class="kr">thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_get_thread</span><span class="p">(</span><span class="n">proc</span><span class="p">);</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_WRITE_READ</span><span class="p">:</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_ioctl_write_read</span><span class="p">(</span><span class="n">filp</span><span class="p">,</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">);</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_SET_MAX_THREADS</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">max_threads</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">copy_from_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">max_threads</span><span class="p">,</span><span class="w"> </span><span class="n">ubuf</span><span class="p">,</span>
+<span class="w">                   </span><span class="k">sizeof</span><span class="p">(</span><span class="n">max_threads</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">max_threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max_threads</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_SET_CONTEXT_MGR</span><span class="p">:</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_ioctl_set_ctx_mgr</span><span class="p">(</span><span class="n">filp</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">binder_ioctl_write_read</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">filp</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">arg</span><span class="p">,</span>
+<span class="w">                </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filp</span><span class="o">-&gt;</span><span class="n">private_data</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_write_read</span><span class="w"> </span><span class="n">bwr</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bwr</span><span class="p">.</span><span class="n">write_size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_thread_write</span><span class="p">(</span><span class="n">proc</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">bwr</span><span class="p">.</span><span class="n">write_buffer</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">bwr</span><span class="p">.</span><span class="n">write_size</span><span class="p">,</span>
+<span class="w">                      </span><span class="o">&amp;</span><span class="n">bwr</span><span class="p">.</span><span class="n">write_consumed</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bwr</span><span class="p">.</span><span class="n">read_size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">//非阻塞读取</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_thread_read</span><span class="p">(</span><span class="n">proc</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="n">bwr</span><span class="p">.</span><span class="n">read_buffer</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">bwr</span><span class="p">.</span><span class="n">read_size</span><span class="p">,</span>
+<span class="w">                     </span><span class="o">&amp;</span><span class="n">bwr</span><span class="p">.</span><span class="n">read_consumed</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">filp</span><span class="o">-&gt;</span><span class="n">f_flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">O_NONBLOCK</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">binder_worklist_empty_ilocked</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">))</span>
+<span class="w">            </span><span class="n">binder_wakeup_proc_ilocked</span><span class="p">(</span><span class="n">proc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">copy_to_user</span><span class="p">(</span><span class="n">ubuf</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bwr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">bwr</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//即先写再读。来看写</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">binder_thread_write</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="p">,</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">,</span>
+<span class="w">            </span><span class="n">binder_uintptr_t</span><span class="w"> </span><span class="n">binder_buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span>
+<span class="w">            </span><span class="n">binder_size_t</span><span class="w"> </span><span class="o">*</span><span class="n">consumed</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_context</span><span class="w"> </span><span class="o">*</span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">context</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">binder_buffer</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="n">consumed</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">return_error</span><span class="p">.</span><span class="n">cmd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BR_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">get_user</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">ptr</span><span class="p">))</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">);</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_TRANSACTION</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_REPLY</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_transaction_data</span><span class="w"> </span><span class="n">tr</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">copy_from_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tr</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tr</span><span class="p">)))</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+<span class="w">            </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tr</span><span class="p">);</span>
+<span class="w">            </span><span class="n">binder_transaction</span><span class="p">(</span><span class="n">proc</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tr</span><span class="p">,</span>
+<span class="w">                       </span><span class="n">cmd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BC_REPLY</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_REGISTER_LOOPER</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_ENTER_LOOPER</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_EXIT_LOOPER</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_REQUEST_DEATH_NOTIFICATION</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_CLEAR_DEATH_NOTIFICATION</span><span class="p">:</span><span class="w"> </span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BC_DEAD_BINDER_DONE</span><span class="p">:</span><span class="w"> </span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 因为是BC_TRANSACTION，它以copy_from_user系统调用从用户空间把binder_transaction_data拷贝，接下来进入binder_transaction</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">binder_transaction</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="p">,</span>
+<span class="w">                   </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">,</span>
+<span class="w">                   </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_transaction_data</span><span class="w"> </span><span class="o">*</span><span class="n">tr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">reply</span><span class="p">,</span>
+<span class="w">                   </span><span class="n">binder_size_t</span><span class="w"> </span><span class="n">extra_buffers_size</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reply</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">in_reply_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">transaction_stack</span><span class="p">;</span>
+<span class="w">        </span><span class="n">target_proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_thread</span><span class="o">-&gt;</span><span class="n">proc</span><span class="p">;</span>
+<span class="w">        </span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">tmp_ref</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">target</span><span class="p">.</span><span class="n">handle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_ref</span><span class="w"> </span><span class="o">*</span><span class="n">ref</span><span class="p">;</span>
+<span class="w">            </span><span class="n">ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_get_ref_olocked</span><span class="p">(</span><span class="n">proc</span><span class="p">,</span><span class="w"> </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">target</span><span class="p">.</span><span class="n">handle</span><span class="p">,</span>
+<span class="w">                             </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">                        </span><span class="n">ref</span><span class="o">-&gt;</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">target_proc</span><span class="p">,</span>
+<span class="w">                        </span><span class="o">&amp;</span><span class="n">return_error</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">target_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="o">-&gt;</span><span class="n">binder_context_mgr_node</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list_first_entry_or_null</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">,</span>
+<span class="w">                         </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_work</span><span class="p">,</span><span class="w"> </span><span class="n">entry</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">transaction_stack</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_transaction</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">transaction_stack</span><span class="p">;</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="n">from</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">from</span><span class="o">-&gt;</span><span class="n">proc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">target_proc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">atomic_inc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">from</span><span class="o">-&gt;</span><span class="n">tmp_ref</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">target_thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target_thread</span><span class="p">)</span>
+<span class="w">        </span><span class="n">e</span><span class="o">-&gt;</span><span class="n">to_thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_thread</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">;</span>
+<span class="w">    </span><span class="n">e</span><span class="o">-&gt;</span><span class="n">to_proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kzalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">t</span><span class="p">),</span><span class="w"> </span><span class="n">GFP_KERNEL</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">fd_fixups</span><span class="p">);</span>
+<span class="w">    </span><span class="n">tcomplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kzalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">tcomplete</span><span class="p">),</span><span class="w"> </span><span class="n">GFP_KERNEL</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">reply</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">))</span>
+<span class="w">        </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">thread</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">to_proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_proc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">to_thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_thread</span><span class="p">;</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">;</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">;</span>
+<span class="w">   </span><span class="c1">// 给目标进程分配新的buffer。</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_alloc_new_buf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span><span class="w"> </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">data_size</span><span class="p">,</span>
+<span class="w">        </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">offsets_size</span><span class="p">,</span><span class="w"> </span><span class="n">extra_buffers_size</span><span class="p">,</span>
+<span class="w">        </span><span class="o">!</span><span class="n">reply</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">),</span><span class="w"> </span><span class="n">current</span><span class="o">-&gt;</span><span class="n">tgid</span><span class="p">);</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">transaction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">target_node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target_node</span><span class="p">;</span>
+
+<span class="w">   </span><span class="c1">// 拷贝数据到目标进程的buffer。</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">binder_alloc_copy_user_to_buffer</span><span class="p">(</span>
+<span class="w">                </span><span class="o">&amp;</span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span>
+<span class="w">                </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                </span><span class="n">ALIGN</span><span class="p">(</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">data_size</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)),</span>
+<span class="w">                </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">.</span><span class="n">ptr</span><span class="p">.</span><span class="n">offsets</span><span class="p">,</span>
+<span class="w">                </span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">offsets_size</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">buffer_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">off_start_offset</span><span class="p">;</span><span class="w"> </span><span class="n">buffer_offset</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">off_end_offset</span><span class="p">;</span>
+<span class="w">         </span><span class="n">buffer_offset</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">binder_size_t</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_object_header</span><span class="w"> </span><span class="o">*</span><span class="n">hdr</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">object_size</span><span class="p">;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_object</span><span class="w"> </span><span class="n">object</span><span class="p">;</span>
+<span class="w">        </span><span class="n">binder_size_t</span><span class="w"> </span><span class="n">object_offset</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// 拷贝位移量。object_offset到目标Buffer</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">binder_alloc_copy_from_buffer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span>
+<span class="w">                          </span><span class="o">&amp;</span><span class="n">object_offset</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                          </span><span class="n">buffer_offset</span><span class="p">,</span>
+<span class="w">                          </span><span class="k">sizeof</span><span class="p">(</span><span class="n">object_offset</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">object_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_get_object</span><span class="p">(</span><span class="n">target_proc</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">object_offset</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">object</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">hdr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">object</span><span class="p">.</span><span class="n">hdr</span><span class="p">;</span>
+<span class="w">        </span><span class="n">off_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">object_offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">object_size</span><span class="p">;</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_BINDER</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_WEAK_BINDER</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">flat_binder_object</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_flat_binder_object</span><span class="p">(</span><span class="n">hdr</span><span class="p">);</span>
+<span class="w">            </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_translate_binder</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">);</span>
+
+<span class="w">         </span><span class="c1">// 拷贝fp到目标Buffer</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">                </span><span class="n">binder_alloc_copy_to_buffer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">object_offset</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_HANDLE</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_TYPE_WEAK_HANDLE</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">flat_binder_object</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_flat_binder_object</span><span class="p">(</span><span class="n">hdr</span><span class="p">);</span>
+<span class="w">            </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_translate_handle</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="kr">thread</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">                </span><span class="n">binder_alloc_copy_to_buffer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">alloc</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">object_offset</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">fp</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reply</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// 是reply，原线程添加work: tcomplete</span>
+<span class="w">        </span><span class="n">binder_enqueue_thread_work</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="n">tcomplete</span><span class="p">);</span>
+<span class="w">        </span><span class="n">binder_pop_transaction_ilocked</span><span class="p">(</span><span class="n">target_thread</span><span class="p">,</span><span class="w"> </span><span class="n">in_reply_to</span><span class="p">);</span>
+<span class="w">      </span><span class="c1">// 目标线程添加work: t-&gt;work</span>
+<span class="w">        </span><span class="n">binder_enqueue_thread_work_ilocked</span><span class="p">(</span><span class="n">target_thread</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">work</span><span class="p">);</span>
+<span class="w">        </span><span class="n">target_proc</span><span class="o">-&gt;</span><span class="n">outstanding_txns</span><span class="o">++</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">// 唤醒目标线程</span>
+<span class="w">        </span><span class="n">wake_up_interruptible_sync</span><span class="p">(</span><span class="o">&amp;</span><span class="n">target_thread</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// 若不是one way，原线程添加work: tcomplete</span>
+<span class="w">        </span><span class="n">binder_enqueue_deferred_thread_work_ilocked</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="n">tcomplete</span><span class="p">);</span>
+<span class="w">      </span><span class="c1">// 记录事务栈，以在后续回复时找到上下文</span>
+<span class="w">        </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">need_reply</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">from_parent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">transaction_stack</span><span class="p">;</span>
+<span class="w">        </span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">transaction_stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">//唤醒目标进程</span>
+<span class="w">        </span><span class="n">return_error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_proc_transaction</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>
+<span class="w">                </span><span class="n">target_proc</span><span class="p">,</span><span class="w"> </span><span class="n">target_thread</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="c1">// 是one way，原线程添加work: tcomplete</span>
+<span class="w">        </span><span class="n">binder_enqueue_thread_work</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="n">tcomplete</span><span class="p">);</span>
+<span class="w">      </span><span class="c1">//唤醒目标进程</span>
+<span class="w">        </span><span class="n">return_error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_proc_transaction</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">target_proc</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 对于发起进程，此时事务完成，thread会被添加tcomplete的binder_work，type为BINDER_WORK_TRANSACTION_COMPLETE</span>
+<span class="c1">// 对于目标进程，会被添加t-&gt;work的binder_work，type为BINDER_WORK_TRANSACTION。 下面是读：</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">binder_thread_read</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_proc</span><span class="w"> </span><span class="o">*</span><span class="n">proc</span><span class="p">,</span>
+<span class="w">                  </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_thread</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">binder_uintptr_t</span><span class="w"> </span><span class="n">binder_buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">binder_size_t</span><span class="w"> </span><span class="o">*</span><span class="n">consumed</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">non_block</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">binder_buffer</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="n">consumed</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">cmd</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">binder_worklist_empty_ilocked</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">))</span>
+<span class="w">            </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="kr">thread</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">binder_worklist_empty_ilocked</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">               </span><span class="n">wait_for_proc_work</span><span class="p">)</span>
+<span class="w">            </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">todo</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">binder_dequeue_work_head_ilocked</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_WORK_TRANSACTION</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="c1">//目标进程被唤起后读取任务会走到这里</span>
+<span class="w">            </span><span class="n">binder_inner_proc_unlock</span><span class="p">(</span><span class="n">proc</span><span class="p">);</span>
+<span class="w">            </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">container_of</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">binder_transaction</span><span class="p">,</span><span class="w"> </span><span class="n">work</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_WORK_TRANSACTION_COMPLETE</span><span class="p">:</span>
+<span class="w">         </span><span class="c1">//这个是发起进程的分支。即tcomplete的binder_work</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">proc</span><span class="o">-&gt;</span><span class="n">oneway_spam_detection_enabled</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">                   </span><span class="n">w</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT</span><span class="p">)</span>
+<span class="w">                </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BR_ONEWAY_SPAM_SUSPECT</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BR_TRANSACTION_COMPLETE</span><span class="p">;</span>
+<span class="w">         </span><span class="c1">//将cmd复制到用户空间。以便IPCThreadState读取。      </span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">put_user</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">ptr</span><span class="p">))</span>
+<span class="w">            </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">...</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="o">-&gt;</span><span class="n">target_node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BR_TRANSACTION</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">trd</span><span class="o">-&gt;</span><span class="n">target</span><span class="p">.</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">trd</span><span class="o">-&gt;</span><span class="n">cookie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BR_REPLY</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">);</span>
+<span class="w">      </span><span class="c1">//将事务复制到用户空间，即读入。</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">copy_to_user</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tr</span><span class="p">,</span><span class="w"> </span><span class="n">trsize</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">trsize</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+综上，我们大致看完了一次Binder的通信过程。</p>
+<h4 id="_5">唤醒方式</h4>
+<p>在Linux驱动程序中，会使用<code>wait_list</code>数据结构来处理。</p>
+<h2 id="_6">标准场景描述</h2>
+<h3 id="servicemanager">ServiceManager启动</h3>
+<p>第一个被启动。除了对binder驱动进行open, mmap之外，还会通过几次<code>ioctl</code>来把自己设置为context manager。此后，会进入binder_loop方法，不断的等待binder驱动数据，再解析执行指令。</p>
+<h3 id="_7">服务注册</h3>
+<p>服务Servcice B注册过程如下：</p>
+<ol>
+<li>Service B 获取ServiceManager。</li>
+<li>调用IServiceManager.addService。</li>
+</ol>
+<p>此外它还需要至少开启一个线程来准备IPC通信，通过<code>ProcessState::startThreadPool</code>  ..<code>ThreadLoop</code>.-&gt;  <code>IPCThreadState.joinThreadPool()</code>，如<code>main_surfaceflinger.cpp</code>的主方法。</p>
+<p>此过程会开启一个线程完全用于IPC。它会调用到<code>IPCThreadState.jinThreadPool</code>来等待通信。</p>
+<p><code>IPCThreadState joinThreadPool()</code> 逻辑本质就是一个死循环，不断进行 <code>IPCThreadState.getAndExecuteCommand()</code>。而此过程则是<code>IPCThreadState.talkWithDriver</code>来获取新的指令，然后调用<code>IPCThreadState.executeCommand</code>来执行。<code>talkWithDriver</code>上面<code>transact</code>时已经提到过，这里不再重复。<code>executeCommand</code>则如下：</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1">//大幅精简</span>
+<span class="n">status_t</span><span class="w"> </span><span class="nf">IPCThreadState::executeCommand</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">cmd</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">cmd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">BR_TRANSACTION</span><span class="p">:</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Parcel</span><span class="w"> </span><span class="n">reply</span><span class="p">;</span>
+<span class="w">            </span><span class="n">status_t</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">target</span><span class="p">.</span><span class="n">ptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// We only have a weak reference on the target object, so we must first try to</span>
+<span class="w">                </span><span class="c1">// safely acquire a strong reference before doing anything else with it.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">RefBase</span><span class="o">::</span><span class="n">weakref_type</span><span class="o">*&gt;</span><span class="p">(</span>
+<span class="w">                        </span><span class="n">tr</span><span class="p">.</span><span class="n">target</span><span class="p">.</span><span class="n">ptr</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">attemptIncStrong</span><span class="p">(</span><span class="k">this</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">BBinder</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">cookie</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">transact</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span>
+<span class="w">                            </span><span class="o">&amp;</span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="n">tr</span><span class="p">.</span><span class="n">flags</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">BBinder</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">cookie</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">decStrong</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">tr</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TF_ONE_WAY</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sendReply</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">tr</span><span class="p">.</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">kForwardReplyFlags</span><span class="p">));</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+因为服务端对我们来说最关注的是<code>BR_TRANSACTION</code>，即Binder驱动发起事务指令（对应之前的发起进程的<code>BC_TRANSACTION</code>）。此时会看到它将tr.cookie强转为BBinder来调用<code>transact</code>从而到<code>BBinder</code>解包数据，根据code再分发到具体的服务方法调用。以及对<code>reply</code>的回写。</p>
+<h3 id="_8">应用进程</h3>
+<p>应用进程Proc A 需要通过Binder跨进程来调用Service B 的过程如下：</p>
+<ol>
+<li>Proc A 获取<code>ServiceManager</code></li>
+<li>此过程仅需要<code>ProcessState</code>参与。<code>ServiceManager</code>会有一些本地的包装类，以确保在本地只需要创建一个<code>ServiceManagerProxy</code>单例即可。第一次创建时，通过<code>ProcessState::self()-&gt;getStrongProxyForHandle(null)</code>即可，也就是创建了一个<code>handle:0</code>的<code>BpBinder</code>。</li>
+<li>注意：大部分<code>BpBinder</code>的创建都是由<code>ProcessState</code>进行的，因为它维护了当前进程下的<code>BpBinder</code>列表</li>
+<li>Proc A 调用<code>IServiceManager</code>的<code>getService(...)</code>方法，获取Service B的Proxy。</li>
+<li>此时因为<code>ServiceManagerProxy</code>的本地缓存还没有此类<code>BpBinder</code>（这里的<code>ServiceManagerProxy</code>泛指<code>ServiceManager</code>的本地包装类），需要进行ipc获取。因此需要由<code>IServiceManager</code>发起一次transact来调用服务端的getService方法。其内部Code是<code>GET_SERVICE</code>。</li>
+<li>Proc A在transact过程中，out数据主要是要查询的服务名称。transact的过程主要是对方法调用参数parcel序列化，<code>BpBinder.transact-&gt;...IPCThreadState.transact-&gt;talkWithDriver, waitForResponse</code>。而<code>talkWithDriver</code>又是ioctl调用<code>binder_write_read</code>过程，此时的事务数据已经封装为了bwr(binder_write_read)结构体。</li>
+<li>binder驱动侧会通过ioctl调用的描述符参数flip的<code>privateData</code>，取出<code>Binder_proc</code>结构体，它记录了Binder在该进程上的信息。此字段初始化与<code>ProcessState</code>的初始化有关，详见上面，不再赘述。再从<code>binder_proc</code>的结构体中获取当前线程结构体信息，它是通过<code>binder_proc</code>里面的<code>binder_thread</code>红黑树记录，以<code>current-&gt;pid</code>比对。此时已经有<code>了proc,thread</code>两个主要环境数据，然后根据不同ioctl的cmd来处理。</li>
+<li><code>binder_ioctl-&gt;binder_ioctl_write_read</code>拷贝了transaction数据之后进入<code>binder_transaction</code>方法。</li>
+<li><code>binder_transaction</code>：<ol>
+<li>获取targetNode, 以此得到targetProc, targetThread, targetBuffer，也就是确定要写入的目标缓存地址。<ol>
+<li>如果不是回复结果，则看transactionData里若有target.handle，那么直接在当前进程proc的binder_node红黑树记录里面去找就可以了，比对handle。若没有，也就是0，此时把binder驱动中context_manager也就是serviceManager作为targetNode。</li>
+<li>若是回复，那么直接从thread的transaction_stack里的From内容就可以找到targetThread等。</li>
+</ol>
+</li>
+<li>分配空间，拷贝transactionData数据，到target_proc-&gt;alloc。</li>
+<li>在proc，targetProc记录适当的binderNode。主要是在注册服务时，SerivceManager进程的proc记录服务进程的Binder_node_ref。以及在获取服务时，在请求进程的proc记录服务提供进程的binder_node_ref。以此可以确保后面再进行ioctl的时候，binder driver能知道发起进程的handle所指的目标binder_node到底是什么、在哪里。</li>
+<li>唤醒目标线程。</li>
+</ol>
+</li>
+<li>等待结果。之后读取结果数据。Parcel解包的时候，会readStrongBinder-&gt;ProcessState::getStrongProxyForHandle(handle)，ProcessState会检查是否已经有维护，若没有，则构造一个BpBinder返回。</li>
+<li>将BpBinder转为Proxy，对于native的转化借助宏和模板，对于java的转化，借助aidl生成的Proxy类。此时，就可以对BpBinder调用其transact方法，来得到对应的功能了。也可以使用Proxy直接调用接口方法。</li>
+<li>用Proxy调用Service B 方法。</li>
+<li>此时流转到BpBinder-&gt;transact，同2.2。不外乎写parcel和解parcel时数据不同，以及handle不同也就是在binder_transaction时，得到的target_node不同，即要写入的目标地址不同、唤醒的线程不同。</li>
+</ol>
+<h2 id="_9">三次复制和一次复制</h2>
+<p>根据官网说法，在安卓8之前其实BinderIPC是三次复制，在安卓8之后是一次复制。减去的两次是序列化和反序列化的过程。详见拓展阅读。用图片来说明下：</p>
+<p>三次复制</p>
+<p><img alt="" src="https://pathpartnerms.wpengine.com/wp-content/uploads/2020/08/Fig4.png" /></p>
+<p>安卓8之后一次复制</p>
+<p><img alt="" src="https://pathpartnerms.wpengine.com/wp-content/uploads/2020/08/Fig9.png" /></p>
+<h2 id="_10">总结</h2>
+<p>众所周知 Binder IPC 在安卓系统上使用异常普遍，以至于很多时候几乎会忽略它背后的复杂性。我先总结下它的解决方案整体思路，再总结由此得出的更多思考。</p>
+<ul>
+<li>为了给用户在跨进程时更好的使用体验，几乎像访问本地方法一样调用远程服务方法。为此提供了动态代理，与调用“存根”。将大部分的调用抽象为事务，将方法的参数、名称等编码打包。进而在远端解包还原出方法调用。</li>
+<li>对于定位远程服务，用户习惯于使用服务名称，即类似互联网域名一样。而对方案内部来说，需要具备把“服务名”解析到具体服务进程的能力。由此需要实现一套进程间的“服务定位器”设计模式。即提供一个众做周知的固定地址作为管理者、服务定位者。后续所有操作皆基于此来互相发现。</li>
+<li>考虑至此，其实并非一定要用Binder，其他的Linux提供的IPC方式依然能满足这些诉求，Socket也好、pipeline也罢等等。只是Binder给出了一个理论上性能更好的选项。但它不得不借助自定义驱动程序，来让进程内留有一块和该驱动fd关联的mmap映射地址。这块地址用户空间可以访问，而对驱动程序在内核模式下来说，它接收到通信数据后，只需要取出目标进程的mmap映射地址写入数据包即可。</li>
+</ul>
+<p>因为这套方案复杂，涉及所有的细节几乎难以做到，由此受到启发是什么？更宽泛的思考是什么？</p>
+<ul>
+<li>其实是进程的独立环境，使得之间的通信变得较为复杂。安全、沙盒，和更自由的通信，这两者有种博弈的关系。如果未来有更好的方式避免进程崩溃导致的稳定性问题、也有更好的方式规避进程间不安全的访问问题，使得进程之间的隔离不再那么死板，自然就会有更轻松的进程间通信。</li>
+<li>进程通信往往涉及开发者体验、业务诉求（性能、安全性、可监听）、操作系统层面的考虑。</li>
+</ul>
+<p>暂时还没有什么更奇妙的想法了。</p>
+<h2 id="_11">拓展阅读</h2>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/android/binder.c">binder.c</a></li>
+<li><a href="https://github.com/torvalds/linux/blob/ef1244124349fea36e4a7e260ecaf156b6b6b22a/drivers/android/binder_alloc.c">binder_alloc.c</a></li>
+<li><a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/native/libs/binder/ProcessState.cpp;l=472;drc=master;bpv=1;bpt=1">ProcessState.cpp</a></li>
+<li><a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/native/libs/binder/IPCThreadState.cpp;drc=master;l=1003?q=IPCThreadState.cpp&amp;ss=android%2Fplatform%2Fsuperproject">IPCThreadState.cpp</a></li>
+<li><a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/native/libs/binder/BpBinder.cpp;l=303;bpv=0;bpt=1">BpBinder.cpp</a></li>
+<li><a href="https://www.pathpartnertech.com/android-binder-ipc-framework-scatter-gather-optimization/">良好的Binder概述，包括安卓8的改进</a></li>
+<li><a href="https://www.synacktiv.com/en/publications/binder-transactions-in-the-bowels-of-the-linux-kernel.html">另一篇次良好的概述</a></li>
+<li><a href="https://source.android.com/devices/architecture/hidl/binder-ipc#scatter">Binder在安卓8的改进</a>，由三次拷贝变为真正的一次拷贝。</li>
+<li>关于Linux系统调用和驱动程序，请参阅“操作系统”section。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
